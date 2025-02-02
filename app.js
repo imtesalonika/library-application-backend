@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const userController = require("./controllers/UserController");
 const authController = require("./controllers/AuthController");
 const productController = require("./controllers/ProductController");
-const postController = require("./controllers/PostController");
+const bookController = require("./controllers/BookController");
 const likeController = require("./controllers/LikeController");
 const commentController = require("./controllers/PostCommentController");
 const cors = require("cors");
@@ -26,7 +26,7 @@ app.use("/api/auth", authController);
 app.use("/api/like", likeController);
 app.use("/api/comment", commentController);
 app.use("/api/products", productController);
-app.use("/api/posts", postController);
+app.use("/api/posts", bookController);
 app.use(express.static("public"));
 
 // Jalankan server
