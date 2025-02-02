@@ -1,4 +1,6 @@
 .env
+.idea
+.vscode
 node_modules
 public/products
 public/posts
