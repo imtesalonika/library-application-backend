@@ -10,8 +10,9 @@ const getAll = async (req, res) => {
       data: rowsPosts,
     })
   } catch (error) {
-    console.error(error)
-    return res.status(400).json({ message: 'Gagal untuk mendapatkan buku!' })
+    return res
+      .status(400)
+      .json({ message: 'Gagal untuk mendapatkan buku!', data: null })
   }
 }
 
@@ -70,7 +71,6 @@ const create = async (req, res) => {
 
     return res.status(200).json({ data: `Buku berhasil ditambahkan!` })
   } catch (error) {
-    console.log(error)
     return res.status(400).json({ message: 'Gagal menambahkan buku!' })
   }
 }
@@ -88,7 +88,6 @@ const getById = async (req, res) => {
     }
     return res.status(200).json({ status: 'ok', data: rows })
   } catch (error) {
-    console.error(error)
     return res.status(404).json({ message: 'Produk tidak ditemukan' })
   }
 }
@@ -97,21 +96,22 @@ const remove = async (req, res) => {
   const id = req.params.id
 
   try {
-    const [product] = await pool.query(`SELECT * FROM posts WHERE id = ${id}`)
-    if (product.length === 0) {
+    const [buku] = await pool.query(`SELECT * FROM buku WHERE id = ${id}`)
+    if (buku.length === 0) {
       return res.status(404).json({
-        status: 404,
-        data: `Post tidak ditemukan!`,
+        message: 'Buku tidak ditemukan!',
+        data: null,
       })
     }
 
-    await pool.query(`DELETE FROM posts WHERE id = ${id}`)
-    return res.status(200).json({ status: 'ok', data: product })
+    await pool.query(`DELETE FROM buku WHERE id = ${id}`)
+    return res
+      .status(200)
+      .json({ message: `Berhasil menghapus buku ${buku[0].judul}`, data: buku })
   } catch (error) {
-    console.error(error)
     return res
       .status(404)
-      .json({ message: 'Gagal menghapus post. Error tidak diketahui.' })
+      .json({ message: 'Gagal menghapus buku. Error tidak diketahui.' })
   }
 }
 
@@ -147,7 +147,6 @@ const update = async (req, res) => {
       .status(200)
       .json({ status: 'ok', message: 'User updated successfully' })
   } catch (error) {
-    console.error(error)
     return res
       .status(500)
       .json({ status: 'error', message: 'Error updating user', error })
