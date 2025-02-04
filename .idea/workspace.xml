@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan prettier">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan logic dan endpoint untuk remove buku">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/BookController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/BookController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/BookService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/BookService.js" afterDir="false" />
@@ -70,7 +70,9 @@
       <updated>1738486557311</updated>
       <workItem from="1738486558458" duration="6611000" />
       <workItem from="1738569599883" duration="988000" />
-      <workItem from="1738586402322" duration="2865000" />
+      <workItem from="1738586402322" duration="3584000" />
+      <workItem from="1738658438932" duration="228000" />
+      <workItem from="1738672706346" duration="5454000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -88,7 +90,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738497575187</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="menambahkan logic dan endpoint untuk remove buku">
+      <option name="closed" value="true" />
+      <created>1738590569208</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1738590569208</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -96,6 +106,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="menambahkan prettier" />
-    <option name="LAST_COMMIT_MESSAGE" value="menambahkan prettier" />
+    <MESSAGE value="menambahkan logic dan endpoint untuk remove buku" />
+    <option name="LAST_COMMIT_MESSAGE" value="menambahkan logic dan endpoint untuk remove buku" />
   </component>
 </project>

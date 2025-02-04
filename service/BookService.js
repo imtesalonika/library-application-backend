@@ -65,7 +65,7 @@ const create = async (req, res) => {
           "${abstrak}",
           "${status === 'true' ? 1 : 0}",
           "${+banyak_buku}",
-          "${picturePath}"
+          "${picturePath ? picturePath : null}"
           ) 
     `)
 
@@ -79,16 +79,16 @@ const getById = async (req, res) => {
   const id = req.params.id
 
   try {
-    const [rows] = await pool.query(`SELECT * FROM products WHERE id = ${id}`)
+    const [rows] = await pool.query(`SELECT * FROM buku WHERE id = ${id}`)
     if (rows.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `Produk tidak ada!`,
+        data: `Buku tidak ada!`,
       })
     }
-    return res.status(200).json({ status: 'ok', data: rows })
+    return res.status(200).json({ status: 'success', data: rows[0] })
   } catch (error) {
-    return res.status(404).json({ message: 'Produk tidak ditemukan' })
+    return res.status(404).json({ message: 'Buku tidak ditemukan' })
   }
 }
 
@@ -117,39 +117,76 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
   const id = req.params.id // ID dari parameter URL
-  const { name, pekerjaan, username, email, password, saldo } = req.body // Data dari body request
+  const {
+    judul,
+    penulis,
+    penerbit,
+    tahun_terbit,
+    isbn,
+    jumlah_halaman,
+    bahasa,
+    edisi,
+    abstrak,
+    status,
+    banyak_buku,
+  } = req.body
+
+  const picturePath = req.file ? `books/${req.file.filename}` : null
 
   try {
-    const [user] = await pool.query(`SELECT * FROM users WHERE id = ${id}`)
-    if (user.length === 0) {
+    const [buku] = await pool.query(`SELECT * FROM buku WHERE id = ${id}`)
+    if (buku.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `User dengan id ${id} tidak ditemukan!`,
+        data: `Buku dengan id ${id} tidak ditemukan!`,
       })
     }
 
-    let hashedPassword = user[0].password
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10)
-    }
+    console.log(buku)
 
     // Update data user
     await pool.query(
       `
-            UPDATE users 
-            SET name = ?, pekerjaan = ?, username = ?, email = ?, password = ?, saldo = ?, updatedAt = NOW()
+            UPDATE buku 
+            SET 
+            judul = ?, 
+            penulis = ?, 
+            penerbit = ?, 
+            tahun_terbit = ?, 
+            isbn = ?, 
+            jumlah_halaman = ?, 
+            bahasa = ?,
+            edisi = ?,
+            abstrak = ?,
+            status = ?,
+            banyak_buku = ?,
+            gambar = ?
             WHERE id = ?;
         `,
-      [name, pekerjaan, username, email, hashedPassword, saldo, id]
+      [
+        !judul ? buku[0].judul : judul,
+        !penulis ? buku[0].penulis : penulis,
+        !penerbit ? buku[0].penerbit : penerbit,
+        !tahun_terbit ? buku[0].tahun_terbit : +tahun_terbit,
+        !isbn ? buku[0].isbn : isbn,
+        !jumlah_halaman ? buku[0].jumlah_halaman : +jumlah_halaman,
+        !bahasa ? buku[0].bahasa : bahasa,
+        !edisi ? buku[0].edisi : edisi,
+        !abstrak ? buku[0].abstrak : abstrak,
+        !status ? buku[0].status : status === 'true' ? 1 : 0,
+        !banyak_buku ? buku[0].banyak_buku : banyak_buku,
+        picturePath ? picturePath : buku[0].gambar,
+        +id,
+      ]
     )
 
     return res
       .status(200)
-      .json({ status: 'ok', message: 'User updated successfully' })
+      .json({ message: 'Buku berhasil disunting.', data: null })
   } catch (error) {
     return res
-      .status(500)
-      .json({ status: 'error', message: 'Error updating user', error })
+      .status(400)
+      .json({ message: 'Gagal menyunting buku', data: error })
   }
 }
 

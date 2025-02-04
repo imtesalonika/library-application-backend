@@ -12,8 +12,8 @@ const router = express.Router()
 
 router.get('/', getAll)
 router.post('/', upload.single('gambar'), create)
-router.get('/:id', authMiddleware, getById)
+router.get('/:id', getById)
 router.delete('/:id', remove)
-router.put('/:id', authMiddleware, update)
+router.put('/:id', upload.single('gambar'), update)
 
 module.exports = router
