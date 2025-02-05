@@ -2,6 +2,6 @@
 .idea
 .vscode
 node_modules
-public/products
+public/books
 public/posts
 public/profile_picture
