@@ -31,10 +31,6 @@ const create = async (req, res) => {
     banyak_buku,
   } = req.body
 
-  // if (!req.file) {
-  //   return res.status(400).send('Tidak ada gambar buku yang diupload!')
-  // }
-
   const picturePath = req.file ? `books/${req.file.filename}` : null
 
   try {
@@ -82,11 +78,10 @@ const getById = async (req, res) => {
     const [rows] = await pool.query(`SELECT * FROM buku WHERE id = ${id}`)
     if (rows.length === 0) {
       return res.status(404).json({
-        status: 404,
-        data: `Buku tidak ada!`,
+        message: `Buku tidak ada!`,
       })
     }
-    return res.status(200).json({ status: 'success', data: rows[0] })
+    return res.status(200).json({ message: 'success', data: rows[0] })
   } catch (error) {
     return res.status(404).json({ message: 'Buku tidak ditemukan' })
   }

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan logic dan endpoint untuk remove buku">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan logic edit buku dan endpointnya">
+      <change afterPath="$PROJECT_DIR$/controllers/PengumumanService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/PengumumanService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/BookController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/BookController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/ProductController.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/service/BookService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/BookService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/ProductService.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +76,13 @@
       <workItem from="1738569599883" duration="988000" />
       <workItem from="1738586402322" duration="3584000" />
       <workItem from="1738658438932" duration="228000" />
-      <workItem from="1738672706346" duration="5454000" />
+      <workItem from="1738672706346" duration="5636000" />
+      <workItem from="1738737299658" duration="863000" />
+      <workItem from="1738741850018" duration="144000" />
+      <workItem from="1738757617704" duration="3910000" />
+      <workItem from="1738814287623" duration="24000" />
+      <workItem from="1738832041014" duration="365000" />
+      <workItem from="1738849791477" duration="1624000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -98,7 +108,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738590569208</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="menambahkan logic edit buku dan endpointnya">
+      <option name="closed" value="true" />
+      <created>1738678758144</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1738678758145</updated>
+    </task>
+    <task id="LOCAL-00005" summary="menambahkan logic edit buku dan endpointnya">
+      <option name="closed" value="true" />
+      <created>1738761960109</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1738761960109</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +133,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="menambahkan prettier" />
     <MESSAGE value="menambahkan logic dan endpoint untuk remove buku" />
-    <option name="LAST_COMMIT_MESSAGE" value="menambahkan logic dan endpoint untuk remove buku" />
+    <MESSAGE value="menambahkan logic edit buku dan endpointnya" />
+    <option name="LAST_COMMIT_MESSAGE" value="menambahkan logic edit buku dan endpointnya" />
   </component>
 </project>
