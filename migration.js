@@ -57,6 +57,7 @@ const queries = [
         judul VARCHAR(255) NOT NULL,
         isi TEXT NOT NULL,
         file JSON,
+        kategori VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,

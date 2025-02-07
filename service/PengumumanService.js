@@ -16,8 +16,8 @@ const getAll = async (req, res) => {
   }
 }
 
-const create = async () => {
-  const { judul, isi } = req.body
+const create = async (req, res) => {
+  const { judul, isi, kategori } = req.body
 
   // const filePath = req.file ? `pengumuman/${req.file.filename}` : null
 
@@ -25,11 +25,13 @@ const create = async () => {
     await pool.query(`
       INSERT INTO pengumuman (
           judul,
-          isi
+          isi, 
+          kategori
           ) 
       VALUES (
           "${judul}",
-          "${isi}"
+          "${isi}",
+          "${kategori}"
           ) 
     `)
 
@@ -39,7 +41,7 @@ const create = async () => {
   }
 }
 
-const getById = async () => {
+const getById = async (req, res) => {
   const id = req.params.id
 
   try {
@@ -55,7 +57,7 @@ const getById = async () => {
     return res.status(404).json({ message: 'Pengumuman tidak ditemukan' })
   }
 }
-const remove = async () => {
+const remove = async (req, res) => {
   const id = req.params.id
 
   try {
@@ -81,9 +83,9 @@ const remove = async () => {
   }
 }
 
-const update = async () => {
+const update = async (req, res) => {
   const id = req.params.id // ID dari parameter URL
-  const { judul, isi } = req.body
+  const { judul, isi, kategori } = req.body
 
   // const picturePath = req.file ? `books/${req.file.filename}` : null
 
@@ -104,12 +106,14 @@ const update = async () => {
             UPDATE buku 
             SET 
             judul = ?, 
-            isi = ?
+            isi = ?,
+            kategori = ?
             WHERE id = ?;
         `,
       [
         !judul ? pengumuman[0].judul : judul,
         !isi ? pengumuman[0].isi : isi,
+        !kategori ? pengumuman[0].kategori : kategori,
         +id,
       ]
     )
