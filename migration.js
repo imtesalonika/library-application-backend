@@ -1,8 +1,8 @@
-const mysql = require("mysql2/promise");
-const dotenv = require("dotenv");
-const bcrypt = require("bcrypt");
+const mysql = require('mysql2/promise')
+const dotenv = require('dotenv')
+const bcrypt = require('bcrypt')
 
-dotenv.config();
+dotenv.config()
 
 const config = {
   host: process.env.DB_HOST,
@@ -15,7 +15,7 @@ const config = {
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
-};
+}
 
 const queries = [
   `DROP DATABASE IF EXISTS library_application_del`,
@@ -39,15 +39,14 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
-  `CREATE TABLE tugas_akhir (
+  `CREATE TABLE tugasakhir (
         id int PRIMARY KEY AUTO_INCREMENT,
         judul VARCHAR(255) NOT NULL,
         penulis VARCHAR(255) NOT NULL,
         pembimbing VARCHAR(255) NOT NULL,
         fakultas VARCHAR(255) NOT NULL,
         prodi VARCHAR(100) NOT NULL,
-        tahun_terbit INT NOT NULL,
-        kata_kunci VARCHAR(100) NOT NULL,
+        katakunci VARCHAR(100) NOT NULL,
         abstrak TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -61,17 +60,17 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
-];
+]
 
-(async () => {
-  const connection = await mysql.createConnection(config);
+;(async () => {
+  const connection = await mysql.createConnection(config)
 
   try {
-    console.log("Migration dimulai!");
+    console.log('Migration dimulai!')
 
     for (const e of queries) {
-      await connection.query(e);
-      console.log(`Query berhasil dieksekusi: ${e}\n`);
+      await connection.query(e)
+      console.log(`Query berhasil dieksekusi: ${e}\n`)
     }
 
     // const hashedPassword = await bcrypt.hash("admin", 10);
@@ -89,10 +88,10 @@ const queries = [
     // `;
     // await connection.query(gabrielQuery, [hashedPassword]);
 
-    console.log("Migrasi berhasil!");
+    console.log('Migrasi berhasil!')
   } catch (error) {
-    console.error("Terjadi kesalahan saat migrasi:", error);
+    console.error('Terjadi kesalahan saat migrasi:', error)
   } finally {
-    await connection.end();
+    await connection.end()
   }
-})();
+})()

@@ -6,6 +6,7 @@ const pengumumanController = require('./controllers/PengumumanController')
 const bookController = require('./controllers/BookController')
 const likeController = require('./controllers/LikeController')
 const commentController = require('./controllers/PostCommentController')
+const tugasakhirController = require('./controllers/TugasAkhirController')
 const cors = require('cors')
 
 const app = express()
@@ -27,6 +28,7 @@ app.use('/api/like', likeController)
 app.use('/api/comment', commentController)
 app.use('/api/pengumuman', pengumumanController)
 app.use('/api/book', bookController)
+app.use('/api/tugasakhir', tugasakhirController)
 app.use(express.static('public'))
 
 // Jalankan server
