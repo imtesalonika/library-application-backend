@@ -1,5 +1,9 @@
 const pool = require('../config/database')
 
+const calculateFileSize = (sizeInBytes) => {
+  return sizeInBytes / (1024 * 1024)
+}
+
 const getAll = async (req, res) => {
   try {
     const [rowsPosts] = await pool.query(`
@@ -19,24 +23,37 @@ const getAll = async (req, res) => {
 const create = async (req, res) => {
   const { judul, isi, kategori } = req.body
 
-  // const filePath = req.file ? `pengumuman/${req.file.filename}` : null
+  const files = req.files
+  const tempFile = []
+
+  console.log(files)
+
+  files.forEach((file) => {
+    tempFile.push({
+      originalFilename: file.originalname,
+      location: `pengumuman_files/${file.filename}`,
+      filename: file.filename,
+      fileSize: calculateFileSize(file.size),
+    })
+  })
 
   try {
-    await pool.query(`
+    await pool.query(
+      `
       INSERT INTO pengumuman (
           judul,
           isi, 
-          kategori
+          kategori, 
+          file
           ) 
-      VALUES (
-          "${judul}",
-          "${isi}",
-          "${kategori}"
-          ) 
-    `)
+      VALUES (?, ?, ?, ?) 
+    `,
+      [judul, isi, kategori, JSON.stringify(tempFile)]
+    )
 
     return res.status(200).json({ data: `Pengumuman berhasil ditambahkan!` })
   } catch (error) {
+    console.log(error)
     return res.status(400).json({ message: 'Gagal menambahkan pengumuman!' })
   }
 }

@@ -60,9 +60,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
-]
-
-;(async () => {
+](async () => {
   const connection = await mysql.createConnection(config)
 
   try {

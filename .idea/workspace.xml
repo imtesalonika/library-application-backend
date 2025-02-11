@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan logic edit buku dan endpointnya">
-      <change afterPath="$PROJECT_DIR$/controllers/PengumumanService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/PengumumanService.js" afterDir="false" />
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="adding logic for annoncement backend and connect it to db">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/ProductController.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/BookService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/BookService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ProductService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/UploadFilePengumumanMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/UploadFilePengumumanMiddleware.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration.js" beforeDir="false" afterPath="$PROJECT_DIR$/migration.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/PengumumanService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/PengumumanService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +80,14 @@
       <workItem from="1738757617704" duration="3910000" />
       <workItem from="1738814287623" duration="24000" />
       <workItem from="1738832041014" duration="365000" />
-      <workItem from="1738849791477" duration="1624000" />
+      <workItem from="1738849791477" duration="2014000" />
+      <workItem from="1738895621705" duration="614000" />
+      <workItem from="1738910282251" duration="1752000" />
+      <workItem from="1738914266564" duration="660000" />
+      <workItem from="1739025201261" duration="295000" />
+      <workItem from="1739169120403" duration="574000" />
+      <workItem from="1739192874098" duration="1330000" />
+      <workItem from="1739278582557" duration="3097000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -124,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738761960109</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="adding logic for annoncement backend and connect it to db">
+      <option name="closed" value="true" />
+      <created>1738851559028</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1738851559028</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -134,6 +147,7 @@
     <MESSAGE value="menambahkan prettier" />
     <MESSAGE value="menambahkan logic dan endpoint untuk remove buku" />
     <MESSAGE value="menambahkan logic edit buku dan endpointnya" />
-    <option name="LAST_COMMIT_MESSAGE" value="menambahkan logic edit buku dan endpointnya" />
+    <MESSAGE value="adding logic for annoncement backend and connect it to db" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding logic for annoncement backend and connect it to db" />
   </component>
 </project>
