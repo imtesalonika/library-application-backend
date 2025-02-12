@@ -26,14 +26,12 @@ const create = async (req, res) => {
   const files = req.files
   const tempFile = []
 
-  console.log(files)
-
   files.forEach((file) => {
     tempFile.push({
       originalFilename: file.originalname,
       location: `pengumuman_files/${file.filename}`,
       filename: file.filename,
-      fileSize: calculateFileSize(file.size),
+      fileSize: `${calculateFileSize(file.size).toFixed(2)} MB`,
     })
   })
 
@@ -104,7 +102,17 @@ const update = async (req, res) => {
   const id = req.params.id // ID dari parameter URL
   const { judul, isi, kategori } = req.body
 
-  // const picturePath = req.file ? `books/${req.file.filename}` : null
+  const files = req.files
+  const tempFile = []
+
+  files.forEach((file) => {
+    tempFile.push({
+      originalFilename: file.originalname,
+      location: `pengumuman_files/${file.filename}`,
+      filename: file.filename,
+      fileSize: `${calculateFileSize(file.size).toFixed(2)} MB`,
+    })
+  })
 
   try {
     const [pengumuman] = await pool.query(
@@ -112,7 +120,7 @@ const update = async (req, res) => {
     )
     if (pengumuman.length === 0) {
       return res.status(404).json({
-        message: `Buku dengan id ${id} tidak ditemukan!`,
+        message: `Pengumuman dengan id ${id} tidak ditemukan!`,
         data: null,
       })
     }
@@ -120,17 +128,19 @@ const update = async (req, res) => {
     // Update data user
     await pool.query(
       `
-            UPDATE buku 
+            UPDATE pengumuman 
             SET 
             judul = ?, 
             isi = ?,
-            kategori = ?
+            kategori = ?,
+            file = ?
             WHERE id = ?;
         `,
       [
         !judul ? pengumuman[0].judul : judul,
         !isi ? pengumuman[0].isi : isi,
         !kategori ? pengumuman[0].kategori : kategori,
+        JSON.stringify(tempFile),
         +id,
       ]
     )
