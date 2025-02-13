@@ -15,14 +15,33 @@ const getAll = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const { judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak } =
-    req.body
+  const {
+    judul,
+    penulis,
+    pembimbing,
+    fakultas,
+    prodi,
+    katakunci,
+    abstrak,
+    tahun,
+    lokasi,
+  } = req.body
 
   try {
     const [postTugasAkhir] = await pool.query(
-      `INSERT INTO tugasakhir (judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak) 
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak]
+      `INSERT INTO tugasakhir (judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak, tahun, lokasi) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        judul,
+        penulis,
+        pembimbing,
+        fakultas,
+        prodi,
+        katakunci,
+        abstrak,
+        tahun,
+        lokasi,
+      ]
     )
 
     return res
@@ -77,9 +96,18 @@ const remove = async (req, res) => {
 }
 
 const update = async (req, res) => {
-  const id = req.params.id // ID dari parameter URL
-  const { judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak } =
-    req.body
+  const id = req.params.id
+  const {
+    judul,
+    penulis,
+    pembimbing,
+    fakultas,
+    prodi,
+    katakunci,
+    abstrak,
+    tahun,
+    lokasi,
+  } = req.body
 
   const picturePath = req.file ? ` tugasakhir/${req.file.filename}` : null
 
@@ -106,7 +134,9 @@ const update = async (req, res) => {
        fakultas = ?, 
        prodi = ?, 
        katakunci = ?,  
-       abstrak = ? 
+       abstrak = ?,
+       tahun = ?, 
+       lokasi = ?
        WHERE id = ?;`,
       [
         judul || tugasakhir[0].judul,
@@ -116,6 +146,8 @@ const update = async (req, res) => {
         prodi || tugasakhir[0].prodi,
         katakunci || tugasakhir[0].katakunci,
         abstrak || tugasakhir[0].abstrak,
+        tahun || tugasakhir[0].tahun,
+        lokasi || tugasakhir[0].lokasi,
         +id,
       ]
     )
