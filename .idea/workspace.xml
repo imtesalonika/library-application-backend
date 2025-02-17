@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="fix bug login, menambahkan tabel user">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/AuthController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/AuthService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +93,7 @@
       <workItem from="1739545051315" duration="2577000" />
       <workItem from="1739770914227" duration="938000" />
       <workItem from="1739772112419" duration="8866000" />
-      <workItem from="1739793902501" duration="7022000" />
+      <workItem from="1739793902501" duration="7717000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -176,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739798025171</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan.">
+      <option name="closed" value="true" />
+      <created>1739801095394</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1739801095394</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +198,7 @@
     <MESSAGE value="adding update logic" />
     <MESSAGE value="Menambahkan logic untuk autentikasi dengan API CIS" />
     <MESSAGE value="fix bug login, menambahkan tabel user" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix bug login, menambahkan tabel user" />
+    <MESSAGE value="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan." />
+    <option name="LAST_COMMIT_MESSAGE" value="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan." />
   </component>
 </project>
