@@ -1,8 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const {login, checkAuth} = require("../service/AuthService");
+const express = require('express')
+const router = express.Router()
+const { login, checkAuth } = require('../service/AuthService')
 
-// Endpoint untuk mendapatkan semua user
-router.post("/login", login);
+router.post('/login', login)
 
-module.exports = router;
+module.exports = router

@@ -21,7 +21,6 @@ const queries = [
   `DROP DATABASE IF EXISTS library_application_del`,
   `CREATE DATABASE library_application_del`,
   `USE library_application_del`,
-
   `CREATE TABLE buku (
         id int PRIMARY KEY AUTO_INCREMENT,
         judul VARCHAR(255) NOT NULL,
@@ -60,7 +59,19 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
-](async () => {
+  `CREATE TABLE users (
+        id int PRIMARY KEY,
+        name VARCHAR(255),
+        username VARCHAR(30),
+        email VARCHAR(255),
+        role VARCHAR(255),
+        status boolean,
+        jabatan VARCHAR(30),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );`,
+]
+;(async () => {
   const connection = await mysql.createConnection(config)
 
   try {
@@ -70,21 +81,6 @@ const queries = [
       await connection.query(e)
       console.log(`Query berhasil dieksekusi: ${e}\n`)
     }
-
-    // const hashedPassword = await bcrypt.hash("admin", 10);
-
-    // Insert user admin ke dalam tabel users
-    // const adminQuery = `
-    //   INSERT INTO users (username, name, pekerjaan, email, password, nomor_telepon)
-    //   VALUES ('admin', 'Admin User', 'Admin', 'admin@forumtani.com', ?, '081234567890');
-    // `;
-    // await connection.query(adminQuery, [hashedPassword]);
-    //
-    // const gabrielQuery = `
-    //   INSERT INTO users (username, name, pekerjaan, email, password, nomor_telepon)
-    //   VALUES ('gabrielhtg', 'Gabriel Cesar Hutagalung', 'Mahasiswa', 'gabrielhutagalung970@gmail.com', ?, '082165646255');
-    // `;
-    // await connection.query(gabrielQuery, [hashedPassword]);
 
     console.log('Migrasi berhasil!')
   } catch (error) {
