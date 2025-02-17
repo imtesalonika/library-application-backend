@@ -8,6 +8,7 @@ const likeController = require('./controllers/LikeController')
 const commentController = require('./controllers/PostCommentController')
 const tugasakhirController = require('./controllers/TugasAkhirController')
 const cors = require('cors')
+const axios = require('axios')
 
 const app = express()
 const port = 3000
@@ -18,8 +19,12 @@ app.use(cors())
 app.use(bodyParser.json())
 
 // Endpoint utama untuk mengecek status API
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.send('User API is Running')
+
+  const response = await axios.get('https://cis.del.ac.id')
+
+  console.log(response)
 })
 
 app.use('/api/users', userController)

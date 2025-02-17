@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="adding multer logic for file store at announcement">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="adding update logic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/PengumumanController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/PengumumanController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/PengumumanService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/PengumumanService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/BookController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/BookController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/AuthService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +90,13 @@
       <workItem from="1739192874098" duration="1330000" />
       <workItem from="1739278582557" duration="4532000" />
       <workItem from="1739364092104" duration="1299000" />
+      <workItem from="1739365529181" duration="1404000" />
+      <workItem from="1739515193170" duration="1276000" />
+      <workItem from="1739517957472" duration="442000" />
+      <workItem from="1739536598546" duration="2840000" />
+      <workItem from="1739545051315" duration="2577000" />
+      <workItem from="1739770914227" duration="938000" />
+      <workItem from="1739772112419" duration="8318000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -144,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739282070041</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="adding update logic">
+      <option name="closed" value="true" />
+      <created>1739365547510</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1739365547510</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +174,7 @@
     <MESSAGE value="menambahkan logic edit buku dan endpointnya" />
     <MESSAGE value="adding logic for annoncement backend and connect it to db" />
     <MESSAGE value="adding multer logic for file store at announcement" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding multer logic for file store at announcement" />
+    <MESSAGE value="adding update logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding update logic" />
   </component>
 </project>
