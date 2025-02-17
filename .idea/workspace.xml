@@ -7,7 +7,6 @@
     <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="fix bug login, menambahkan tabel user">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/AuthController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration.js" beforeDir="false" afterPath="$PROJECT_DIR$/migration.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/AuthService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,7 +94,7 @@
       <workItem from="1739545051315" duration="2577000" />
       <workItem from="1739770914227" duration="938000" />
       <workItem from="1739772112419" duration="8866000" />
-      <workItem from="1739793902501" duration="4076000" />
+      <workItem from="1739793902501" duration="7022000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -169,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739783595097</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fix bug login, menambahkan tabel user">
+      <option name="closed" value="true" />
+      <created>1739798025171</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1739798025171</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

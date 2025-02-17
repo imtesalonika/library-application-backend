@@ -1,12 +1,5 @@
-const jwt = require('jsonwebtoken')
 const pool = require('../config/database')
 require('dotenv').config()
-
-const generateToken = (username, ip) => {
-  return jwt.sign({ username, ip }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  })
-}
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
@@ -14,8 +7,6 @@ const login = async (req, res) => {
   const { username, password } = req.body
 
   try {
-    // const agent = new https.Agent({ rejectUnauthorized: false }) // Abaikan SSL hanya saat debugging
-
     const formdata = new URLSearchParams()
     formdata.append('username', username)
     formdata.append('password', password)
@@ -43,29 +34,72 @@ const login = async (req, res) => {
       `SELECT * FROM users WHERE id = ${data.user.user_id}`
     )
 
-    console.log(rows)
-
     if (rows.length === 0) {
       data.is_complete = false
+
+      await pool.query(
+        `INSERT INTO users (id, username, email, role, status, jabatan) 
+            VALUES (?, ?, ?, ?, ?, ?);`,
+        [
+          data.user.user_id,
+          data.user.username,
+          data.user.email,
+          data.user.role,
+          data.user.status,
+          data.user.jabatan,
+        ]
+      )
       return res.status(200).json({
         status: 'success',
         message: 'Berhasil mengambil data',
         data,
       })
     } else {
-      data.is_complete = true
-      return res.status(200).json({
-        status: 'success',
-        message: 'Berhasil mengambil data',
-        data,
-      })
+      if (rows[0].name) {
+        data.is_complete = true
+        return res.status(200).json({
+          status: 'success',
+          message: 'Berhasil mengambil data',
+          data,
+        })
+      } else {
+        data.is_complete = false
+        return res.status(200).json({
+          status: 'success',
+          message: 'Berhasil mengambil data',
+          data,
+        })
+      }
     }
   } catch (error) {
-    console.error(error)
     return res.status(500).json({ message: 'Terjadi kesalahan saat login.' })
+  }
+}
+
+const completeData = async (req, res) => {
+  const { user_id, name } = req.body
+
+  try {
+    await pool.query(
+      `UPDATE users 
+       SET name = ?
+       WHERE id = ?;`,
+      [name, user_id]
+    )
+
+    return res.status(200).json({
+      message: 'Berhasil menambahkan nama.',
+      data: null,
+    })
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json({ message: 'Terjadi kesalahan saat login.', data: null })
   }
 }
 
 module.exports = {
   login,
+  completeData,
 }
