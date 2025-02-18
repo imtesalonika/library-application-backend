@@ -72,6 +72,8 @@ const login = async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error)
+
     return res.status(500).json({ message: 'Terjadi kesalahan saat login.' })
   }
 }
@@ -87,7 +89,7 @@ const completeData = async (req, res) => {
       [name, user_id]
     )
 
-    const [row] = pool.query(`SELECT * FROM users WHERE id = ?;`, [user_id])
+    const [row] = await pool.query(`SELECT * FROM users WHERE id=${user_id};`)
 
     return res.status(200).json({
       message: 'Berhasil menambahkan nama.',
