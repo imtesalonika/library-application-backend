@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan.">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan logic untuk redux fe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/AuthService.js" afterDir="false" />
     </list>
@@ -93,7 +93,9 @@
       <workItem from="1739545051315" duration="2577000" />
       <workItem from="1739770914227" duration="938000" />
       <workItem from="1739772112419" duration="8866000" />
-      <workItem from="1739793902501" duration="7717000" />
+      <workItem from="1739793902501" duration="8034000" />
+      <workItem from="1739840000255" duration="683000" />
+      <workItem from="1739870020337" duration="1605000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -183,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739801095394</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="menambahkan logic untuk redux fe">
+      <option name="closed" value="true" />
+      <created>1739801862891</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1739801862891</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +209,7 @@
     <MESSAGE value="Menambahkan logic untuk autentikasi dengan API CIS" />
     <MESSAGE value="fix bug login, menambahkan tabel user" />
     <MESSAGE value="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan." />
-    <option name="LAST_COMMIT_MESSAGE" value="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan." />
+    <MESSAGE value="menambahkan logic untuk redux fe" />
+    <option name="LAST_COMMIT_MESSAGE" value="menambahkan logic untuk redux fe" />
   </component>
 </project>

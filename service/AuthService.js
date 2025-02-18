@@ -50,24 +50,25 @@ const login = async (req, res) => {
         ]
       )
       return res.status(200).json({
-        status: 'success',
         message: 'Berhasil mengambil data',
-        data,
+        data: data,
       })
     } else {
       if (rows[0].name) {
         data.is_complete = true
+        delete data.user
+
+        data.user = rows[0]
+
         return res.status(200).json({
-          status: 'success',
           message: 'Berhasil mengambil data',
-          data,
+          data: data,
         })
       } else {
         data.is_complete = false
         return res.status(200).json({
-          status: 'success',
           message: 'Berhasil mengambil data',
-          data,
+          data: data,
         })
       }
     }
