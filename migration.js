@@ -70,6 +70,20 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
+  `
+    CREATE TABLE peminjaman (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  id_buku INT(11),
+  id_user INT(11),
+  tanggal_pinjam TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  tanggal_kembali TIMESTAMP NULL,
+  status VARCHAR(50),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_buku) REFERENCES buku(id),
+  FOREIGN KEY (id_user) REFERENCES users(id)
+);
+    `,
 ]
 ;(async () => {
   const connection = await mysql.createConnection(config)

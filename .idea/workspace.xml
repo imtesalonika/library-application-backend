@@ -4,14 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan logic untuk redux fe">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="fix bug login dan implement log out">
+      <change afterPath="$PROJECT_DIR$/controllers/PinjamBukuController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/PinjamBukuService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/AuthService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration.js" beforeDir="false" afterPath="$PROJECT_DIR$/migration.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,7 +105,8 @@
       <workItem from="1739772112419" duration="8866000" />
       <workItem from="1739793902501" duration="8034000" />
       <workItem from="1739840000255" duration="683000" />
-      <workItem from="1739870020337" duration="1605000" />
+      <workItem from="1739870020337" duration="5765000" />
+      <workItem from="1739968506286" duration="1025000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -193,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739801862891</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fix bug login dan implement log out">
+      <option name="closed" value="true" />
+      <created>1739883117296</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1739883117296</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,6 +229,7 @@
     <MESSAGE value="fix bug login, menambahkan tabel user" />
     <MESSAGE value="menambahkan fungsi untuk melengkapi data pada tabel user apabila sebelumnya belum pernah tersimpan." />
     <MESSAGE value="menambahkan logic untuk redux fe" />
-    <option name="LAST_COMMIT_MESSAGE" value="menambahkan logic untuk redux fe" />
+    <MESSAGE value="fix bug login dan implement log out" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bug login dan implement log out" />
   </component>
 </project>
