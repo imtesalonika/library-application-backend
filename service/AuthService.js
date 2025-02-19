@@ -34,43 +34,50 @@ const login = async (req, res) => {
       `SELECT * FROM users WHERE id = ${data.user.user_id}`
     )
 
-    if (rows.length === 0) {
-      data.is_complete = false
+    if (data.user.role === 'Staff') {
+      if (rows.length === 0) {
+        data.is_complete = false
 
-      await pool.query(
-        `INSERT INTO users (id, username, email, role, status, jabatan) 
+        await pool.query(
+          `INSERT INTO users (id, username, email, role, status, jabatan) 
             VALUES (?, ?, ?, ?, ?, ?);`,
-        [
-          data.user.user_id,
-          data.user.username,
-          data.user.email,
-          data.user.role,
-          data.user.status,
-          data.user.jabatan,
-        ]
-      )
-      return res.status(200).json({
-        message: 'Berhasil mengambil data',
-        data: data,
-      })
-    } else {
-      if (rows[0].name) {
-        data.is_complete = true
-        delete data.user
-
-        data.user = rows[0]
-
+          [
+            data.user.user_id,
+            data.user.username,
+            data.user.email,
+            data.user.role,
+            data.user.status,
+            data.user.jabatan,
+          ]
+        )
         return res.status(200).json({
           message: 'Berhasil mengambil data',
           data: data,
         })
       } else {
-        data.is_complete = false
-        return res.status(200).json({
-          message: 'Berhasil mengambil data',
-          data: data,
-        })
+        if (rows[0].name) {
+          data.is_complete = true
+          delete data.user
+
+          data.user = rows[0]
+
+          return res.status(200).json({
+            message: 'Berhasil mengambil data',
+            data: data,
+          })
+        } else {
+          data.is_complete = false
+          return res.status(200).json({
+            message: 'Berhasil mengambil data',
+            data: data,
+          })
+        }
       }
+    } else {
+      return res.status(400).json({
+        message: 'Login gagal. Akun anda tidak diizinkan login.',
+        data: null,
+      })
     }
   } catch (error) {
     console.log(error)
