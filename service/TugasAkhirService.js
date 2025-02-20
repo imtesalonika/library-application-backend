@@ -57,7 +57,10 @@ const getById = async (req, res) => {
   const id = req.params.id
 
   try {
-    const [rows] = await pool.query(`SELECT * FROM tugasakhir WHERE id = ${id}`)
+    const [rows] = await pool.query(`SELECT * FROM tugasakhir WHERE id = ?`, [
+      id,
+    ])
+
     if (rows.length === 0) {
       return res.status(404).json({
         message: ` Tugas Akhir tidak ada!`,
@@ -74,8 +77,11 @@ const remove = async (req, res) => {
 
   try {
     const [tugasakhir] = await pool.query(
-      `SELECT * FROM tugasakhir WHERE id = ${id}`
+      `SELECT * FROM tugasakhir WHERE id = ?`,
+      [id]
     )
+    await pool.query(`DELETE FROM tugasakhir WHERE id = ?`, [id])
+
     if (tugasakhir.length === 0) {
       return res.status(404).json({
         message: 'Tugas Akhir tidak ditemukan!',
@@ -108,8 +114,6 @@ const update = async (req, res) => {
     tahun,
     lokasi,
   } = req.body
-
-  const picturePath = req.file ? ` tugasakhir/${req.file.filename}` : null
 
   try {
     const [tugasakhir] = await pool.query(

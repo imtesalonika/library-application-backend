@@ -46,6 +46,8 @@ const queries = [
         fakultas VARCHAR(255) NOT NULL,
         prodi VARCHAR(100) NOT NULL,
         katakunci VARCHAR(100) NOT NULL,
+        tahun VARCHAR(100) NOT NULL,
+        lokasi VARCHAR(100) NOT NULL,
         abstrak TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

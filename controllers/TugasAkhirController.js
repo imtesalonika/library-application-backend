@@ -13,5 +13,6 @@ router.get('/', getAll)
 router.get('/:id', getById)
 router.post('/', create)
 router.delete('/:id', remove)
+router.put('/:id', update)
 
 module.exports = router
