@@ -34,7 +34,7 @@ const login = async (req, res) => {
       `SELECT * FROM users WHERE id = ${data.user.user_id}`
     )
 
-    if (data.user.role === 'Staff') {
+    if (data.user.role === 'Mahasiswa') {
       if (rows.length === 0) {
         data.is_complete = false
 
