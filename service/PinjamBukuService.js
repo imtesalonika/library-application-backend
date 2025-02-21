@@ -66,10 +66,7 @@ const update = async (req, res) => {
         [status, new Date(), +id]
       )
       return res.status(200).json({
-        message:
-          status === 'ACCEPTED'
-            ? 'Peminjaman diizinkan.'
-            : 'Peminjaman ditolak',
+        message: 'Peminjaman Selesai.',
         data: rows,
       })
     }
