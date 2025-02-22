@@ -14,6 +14,6 @@ router.get('/', getAll)
 router.post('/', upload.array('files'), create)
 router.get('/:id', getById)
 router.delete('/:id', remove)
-router.patch('/:id', upload.array('files'), update)
+router.put('/:id', upload.array('files'), update)
 
 module.exports = router
