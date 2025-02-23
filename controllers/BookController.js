@@ -12,7 +12,7 @@ const router = express.Router()
 
 router.get('/', getAll)
 router.post('/', upload.single('gambar'), create)
-router.get('/:i d', getById)
+router.get('/:id', getById)
 router.delete('/:id', remove)
 router.put('/:id', upload.single('gambar'), update)
 

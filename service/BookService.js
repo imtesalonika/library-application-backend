@@ -5,6 +5,7 @@ const getAll = async (req, res) => {
     const [rowsPosts] = await pool.query(`
        SELECT * FROM buku;
    `)
+
     return res.status(200).json({
       message: 'success',
       data: rowsPosts,
@@ -27,6 +28,7 @@ const create = async (req, res) => {
     bahasa,
     edisi,
     abstrak,
+    lokasi,
     status,
     banyak_buku,
   } = req.body
@@ -34,7 +36,7 @@ const create = async (req, res) => {
   const picturePath = req.file ? `books/${req.file.filename}` : null
 
   try {
-    const [postBuku] = await pool.query(`
+    await pool.query(`
       INSERT INTO buku (
           judul,
           penulis,
@@ -47,6 +49,7 @@ const create = async (req, res) => {
           abstrak,
           status,
           banyak_buku,
+          lokasi,
           gambar
           ) 
       VALUES (
@@ -61,6 +64,7 @@ const create = async (req, res) => {
           "${abstrak}",
           "${status === 'true' ? 1 : 0}",
           "${+banyak_buku}",
+          "${lokasi}",
           "${picturePath ? picturePath : null}"
           ) 
     `)
@@ -123,6 +127,7 @@ const update = async (req, res) => {
     bahasa,
     edisi,
     abstrak,
+    lokasi,
     status,
     banyak_buku,
   } = req.body
@@ -156,6 +161,7 @@ const update = async (req, res) => {
             abstrak = ?,
             status = ?,
             banyak_buku = ?,
+            lokasi = ?,
             gambar = ?
             WHERE id = ?;
         `,
@@ -171,6 +177,7 @@ const update = async (req, res) => {
         !abstrak ? buku[0].abstrak : abstrak,
         !status ? buku[0].status : status === 'true' ? 1 : 0,
         !banyak_buku ? buku[0].banyak_buku : banyak_buku,
+        !lokasi ? buku[0].lokasi : lokasi,
         picturePath ? picturePath : buku[0].gambar,
         +id,
       ]

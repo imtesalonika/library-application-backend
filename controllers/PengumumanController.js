@@ -7,7 +7,6 @@ const {
   update,
 } = require('../service/PengumumanService')
 const router = express.Router()
-const authMiddleware = require('../middleware/AuthMiddleware')
 const upload = require('../middleware/UploadFilePengumumanMiddleware')
 
 router.get('/', getAll)
