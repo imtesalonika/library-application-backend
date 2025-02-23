@@ -1,3 +1,5 @@
+use library_application_del;
+
 CREATE TABLE t_m_buku (
     ID INT PRIMARY KEY,
     Edisi VARCHAR(255),
