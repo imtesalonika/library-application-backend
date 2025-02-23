@@ -99,7 +99,7 @@ const remove = async (req, res) => {
 }
 
 const update = async (req, res) => {
-  const id = req.params.id // ID dari parameter URL
+  const id = req.params.id
   const { judul, isi, kategori } = req.body
 
   const files = req.files
@@ -115,9 +115,12 @@ const update = async (req, res) => {
   })
 
   try {
+    // Ambil data pengumuman berdasarkan ID
     const [pengumuman] = await pool.query(
-      `SELECT * FROM pengumuman WHERE id = ${id}`
+      `SELECT * FROM pengumuman WHERE id = ?`,
+      [id]
     )
+
     if (pengumuman.length === 0) {
       return res.status(404).json({
         message: `Pengumuman dengan id ${id} tidak ditemukan!`,
@@ -125,23 +128,26 @@ const update = async (req, res) => {
       })
     }
 
-    // Update data user
+    // Perbaiki kesalahan pengambilan file
+    const updatedFile =
+      files.length > 0 ? tempFile : JSON.parse(pengumuman[0].file)
+
     await pool.query(
       `
-            UPDATE pengumuman 
-            SET 
-            judul = ?, 
-            isi = ?,
-            kategori = ?,
-            file = ?
-            WHERE id = ?;
-        `,
+      UPDATE pengumuman 
+      SET 
+      judul = ?, 
+      isi = ?,
+      kategori = ?,
+      file = ?
+      WHERE id = ?;
+      `,
       [
-        !judul ? pengumuman[0].judul : judul,
-        !isi ? pengumuman[0].isi : isi,
-        !kategori ? pengumuman[0].kategori : kategori,
-        JSON.stringify(tempFile),
-        +id,
+        judul || pengumuman[0].judul,
+        isi || pengumuman[0].isi,
+        kategori || pengumuman[0].kategori,
+        JSON.stringify(updatedFile),
+        id,
       ]
     )
 
@@ -149,6 +155,7 @@ const update = async (req, res) => {
       .status(200)
       .json({ message: 'Pengumuman berhasil disunting.', data: null })
   } catch (error) {
+    console.error(error)
     return res
       .status(400)
       .json({ message: 'Gagal menyunting pengumuman', data: error })
