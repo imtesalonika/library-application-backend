@@ -12,7 +12,7 @@ CREATE TABLE t_m_buku (
     Gambar VARCHAR(255),
     Subjek VARCHAR(255),
     Topik VARCHAR(255),
-    Id_Buku_Master INT
+    Id_Buku_Master VARCHAR(255)
 );
 
 insert  into `t_m_buku`(`ID`,`Edisi`,`Pengarang`,`Deskripsi`,`Penerbit`,`Judul`,`Jumlah_Buku`,`Bahasa`,`Gambar`,`Subjek`,`Topik`,`Id_Buku_Master`) values (1,'','C.J. Date','This book is a comprehensive introduction to the now very large field of database systems. It provides a solid grounding in the foundation of database technology and gives some idea of how the fields is likely to develop in the future, The book is meant primarily as a textbook, not a work of reference; the emphasis throughout is on insight and understanding, not just on formalisme.','Pearson Educations',' an Introduction to Database Systems: Seventh',20,'English','default_book_cover.jpg','Database (System)',NULL,NULL);
