@@ -40,19 +40,20 @@ const queries = [
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
   `CREATE TABLE tugasakhir (
-        id int PRIMARY KEY AUTO_INCREMENT,
-        judul VARCHAR(255) NOT NULL,
-        penulis VARCHAR(255) NOT NULL,
-        pembimbing VARCHAR(255) NOT NULL,
-        fakultas VARCHAR(255) NOT NULL,
-        prodi VARCHAR(100) NOT NULL,
-        katakunci VARCHAR(100) NOT NULL,
-        tahun VARCHAR(100) NOT NULL,
-        lokasi VARCHAR(100) NOT NULL,
-        abstrak TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );`,
+          id int PRIMARY KEY AUTO_INCREMENT,
+          judul VARCHAR(255) NOT NULL,
+          penulis VARCHAR(255) NOT NULL,
+          pembimbing VARCHAR(255) NOT NULL,
+          penguji VARCHAR(255) NOT NULL,
+          fakultas VARCHAR(255) NOT NULL,
+          prodi VARCHAR(100) NOT NULL,
+          katakunci VARCHAR(100) NOT NULL,
+          tahun VARCHAR(100) NOT NULL,
+          lokasi VARCHAR(100) NOT NULL,
+          abstrak TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      );`,
   `CREATE TABLE pengumuman (
         id int PRIMARY KEY AUTO_INCREMENT,
         judul VARCHAR(255) NOT NULL,
