@@ -100,7 +100,7 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
   const id = req.params.id
-  const { judul, isi, kategori } = req.body
+  const { judul, isi, kategori, oldFiles } = req.body
 
   const files = req.files
   const tempFile = []
@@ -113,6 +113,12 @@ const update = async (req, res) => {
       fileSize: `${calculateFileSize(file.size).toFixed(2)} MB`,
     })
   })
+
+  if (oldFiles) {
+    JSON.parse(oldFiles).forEach((oldFile) => {
+      tempFile.push(oldFile)
+    })
+  }
 
   try {
     // Ambil data pengumuman berdasarkan ID
@@ -129,8 +135,8 @@ const update = async (req, res) => {
     }
 
     // Perbaiki kesalahan pengambilan file
-    const updatedFile =
-      files.length > 0 ? tempFile : JSON.parse(pengumuman[0].file)
+    // const updatedFile =
+    //   files.length > 0 ? tempFile : JSON.parse(pengumuman[0].file)
 
     await pool.query(
       `
@@ -146,7 +152,7 @@ const update = async (req, res) => {
         judul || pengumuman[0].judul,
         isi || pengumuman[0].isi,
         kategori || pengumuman[0].kategori,
-        JSON.stringify(updatedFile),
+        JSON.stringify(tempFile),
         id,
       ]
     )
