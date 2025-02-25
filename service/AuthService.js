@@ -34,7 +34,7 @@ const login = async (req, res) => {
       `SELECT * FROM users WHERE id = ${data.user.user_id}`
     )
 
-    if (data.user.role === 'Mahasiswa') {
+    if (data.user.role === 'Staff') {
       if (rows.length === 0) {
         data.is_complete = false
 
@@ -47,7 +47,7 @@ const login = async (req, res) => {
             data.user.email,
             data.user.role,
             data.user.status,
-            data.user.jabatan,
+            data.user.jabatan.length > 0 ? [data.user.jabatan[0].jabatan] : '-',
           ]
         )
         return res.status(200).json({
@@ -74,6 +74,54 @@ const login = async (req, res) => {
         }
       }
     } else {
+      if (
+        data.user.role === 'Mahasiswa' &&
+        (username === 'ifs21005' ||
+          username === 'ifs21049' ||
+          username === 'ifs21055')
+      ) {
+        if (rows.length === 0) {
+          data.is_complete = false
+
+          await pool.query(
+            `INSERT INTO users (id, username, email, role, status, jabatan) 
+            VALUES (?, ?, ?, ?, ?, ?);`,
+            [
+              data.user.user_id,
+              data.user.username,
+              data.user.email,
+              data.user.role,
+              data.user.status,
+              data.user.jabatan.length > 0
+                ? [data.user.jabatan[0].jabatan]
+                : '-',
+            ]
+          )
+          return res.status(200).json({
+            message: 'Berhasil mengambil data',
+            data: data,
+          })
+        } else {
+          if (rows[0].name) {
+            data.is_complete = true
+            delete data.user
+
+            data.user = rows[0]
+
+            return res.status(200).json({
+              message: 'Berhasil mengambil data',
+              data: data,
+            })
+          } else {
+            data.is_complete = false
+            return res.status(200).json({
+              message: 'Berhasil mengambil data',
+              data: data,
+            })
+          }
+        }
+      }
+
       return res.status(400).json({
         message: 'Login gagal. Akun anda tidak diizinkan login.',
         data: null,
