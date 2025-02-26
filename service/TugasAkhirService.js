@@ -25,12 +25,13 @@ const create = async (req, res) => {
     abstrak,
     tahun,
     lokasi,
+    penguji,
   } = req.body
 
   try {
     const [postTugasAkhir] = await pool.query(
-      `INSERT INTO tugasakhir (judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak, tahun, lokasi) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO tugasakhir (judul, penulis, pembimbing, fakultas, prodi, katakunci, abstrak, tahun, lokasi, penguji) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         judul,
         penulis,
@@ -41,6 +42,7 @@ const create = async (req, res) => {
         abstrak,
         tahun,
         lokasi,
+        penguji,
       ]
     )
 
@@ -113,6 +115,7 @@ const update = async (req, res) => {
     abstrak,
     tahun,
     lokasi,
+    penguji,
   } = req.body
 
   try {
@@ -126,8 +129,6 @@ const update = async (req, res) => {
       })
     }
 
-    console.log(tugasakhir)
-
     // Update data user
     await pool.query(
       `UPDATE tugasakhir 
@@ -140,7 +141,8 @@ const update = async (req, res) => {
        katakunci = ?,  
        abstrak = ?,
        tahun = ?, 
-       lokasi = ?
+       lokasi = ?,
+       penguji = ?
        WHERE id = ?;`,
       [
         judul || tugasakhir[0].judul,
@@ -152,6 +154,7 @@ const update = async (req, res) => {
         abstrak || tugasakhir[0].abstrak,
         tahun || tugasakhir[0].tahun,
         lokasi || tugasakhir[0].lokasi,
+        penguji || tugasakhir[0].penguji,
         +id,
       ]
     )

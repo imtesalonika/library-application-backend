@@ -22,7 +22,6 @@ const create = async (req, res) => {
         `)
     return res.status(200).json({ data: `Pendaftaran berhasil!` })
   } catch (error) {
-    console.log(error)
     return res.status(400).json({ message: 'Error creating user' })
   }
 }

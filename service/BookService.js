@@ -132,9 +132,6 @@ const update = async (req, res) => {
     banyak_buku,
   } = req.body
 
-  console.log(isbn)
-  console.log(lokasi)
-
   const picturePath = req.file ? `books/${req.file.filename}` : null
 
   try {

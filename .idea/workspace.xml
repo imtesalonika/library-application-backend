@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="membuat kode migrasi tabel dari SIPP untuk tugas akhir dan fix beberapa bug.">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="membuat login staff perpustakaan">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/AuthService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/BookService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/BookService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/TugasAkhirService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/TugasAkhirService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/UserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +124,9 @@
       <workItem from="1740398724237" duration="3439000" />
       <workItem from="1740402605565" duration="2247000" />
       <workItem from="1740486187686" duration="382000" />
-      <workItem from="1740486881333" duration="1983000" />
+      <workItem from="1740486881333" duration="2701000" />
+      <workItem from="1740572346352" duration="22000" />
+      <workItem from="1740574333814" duration="5440000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -300,7 +304,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740404647754</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="membuat login staff perpustakaan">
+      <option name="closed" value="true" />
+      <created>1740490150235</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1740490150235</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -323,6 +335,7 @@
     <MESSAGE value="memperbaiki bug dan implement multiple files pada halaman pengumuman" />
     <MESSAGE value="memperbaiki beberapa bug" />
     <MESSAGE value="membuat kode migrasi tabel dari SIPP untuk tugas akhir dan fix beberapa bug." />
-    <option name="LAST_COMMIT_MESSAGE" value="membuat kode migrasi tabel dari SIPP untuk tugas akhir dan fix beberapa bug." />
+    <MESSAGE value="membuat login staff perpustakaan" />
+    <option name="LAST_COMMIT_MESSAGE" value="membuat login staff perpustakaan" />
   </component>
 </project>
