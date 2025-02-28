@@ -185,7 +185,7 @@ const loginMobile = async (req, res) => {
         ]
       )
       return res.status(200).json({
-        message: 'Login berhasil.',
+        message: 'Login berhasil. Tapi kamu perlu melengkapi nama kamu terlebih dahulu.',
         data: data,
       })
     } else {
@@ -202,7 +202,7 @@ const loginMobile = async (req, res) => {
       } else {
         data.is_complete = false
         return res.status(200).json({
-          message: 'Login berhasil.',
+          message: 'Login berhasil. Tapi kamu perlu melengkapi nama kamu terlebih dahulu.',
           data: data,
         })
       }
@@ -217,7 +217,12 @@ const loginMobile = async (req, res) => {
 }
 
 const completeData = async (req, res) => {
+  console.log('Tesa Log : Ada request complete data');
+  
   const { user_id, name } = req.body
+
+  console.log(req.body);
+  
 
   try {
     await pool.query(
