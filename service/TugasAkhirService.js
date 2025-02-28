@@ -14,6 +14,25 @@ const getAll = async (req, res) => {
   }
 }
 
+const validateFakultasAndProdi = (fakultas, prodi) => {
+  const fakultasProdiMapping = {
+    FITE: ['Informatika', 'Teknik Elektro', 'Sistem Informasi'],
+    FTI: ['Manajemen Rekayasa', 'Teknik Metalurgi'],
+    FTB: ['Bioproses'],
+    Vokasi: [
+      'Teknologi Informasi',
+      'Teknologi Komputer',
+      'Teknologi Rekayasa Perangkat Lunak',
+    ],
+  }
+
+  if (!fakultasProdiMapping[fakultas]) {
+    return false
+  }
+
+  return fakultasProdiMapping[fakultas].includes(prodi)
+}
+
 const create = async (req, res) => {
   const {
     judul,
@@ -27,6 +46,11 @@ const create = async (req, res) => {
     lokasi,
     penguji,
   } = req.body
+
+  // Validasi fakultas dan prodi
+  if (!validateFakultasAndProdi(fakultas, prodi)) {
+    return res.status(400).json({ message: 'Fakultas dan Prodi tidak sesuai!' })
+  }
 
   try {
     const [postTugasAkhir] = await pool.query(
@@ -48,7 +72,7 @@ const create = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: `Tugas Akhir berhasil ditambahkan!` })
+      .json({ message: 'Tugas Akhir berhasil ditambahkan!' })
   } catch (error) {
     console.error(error)
     return res.status(400).json({ message: 'Gagal menambahkan Tugas Akhir!' })
@@ -169,10 +193,34 @@ const update = async (req, res) => {
   }
 }
 
+const getByProgram = async (req, res) => {
+  const { fakultas, prodi } = req.query
+
+  if (!validateFakultasAndProdi(fakultas, prodi)) {
+    return res.status(400).json({ message: 'Fakultas dan Prodi tidak sesuai!' })
+  }
+
+  try {
+    const [rowsPosts] = await pool.query(
+      `SELECT * FROM tugasakhir WHERE fakultas = ? AND prodi = ?`,
+      [fakultas, prodi]
+    )
+    return res.status(200).json({
+      message: 'success',
+      data: rowsPosts,
+    })
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: 'Gagal untuk mendapatkan tugas akhir!', data: null })
+  }
+}
+
 module.exports = {
   getAll,
   create,
   getById,
   remove,
   update,
+  getByProgram,
 }
