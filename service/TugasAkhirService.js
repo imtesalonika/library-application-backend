@@ -196,8 +196,8 @@ const update = async (req, res) => {
 const getByProgram = async (req, res) => {
   const { fakultas, prodi } = req.query
 
-  if (!validateFakultasAndProdi(fakultas, prodi)) {
-    return res.status(400).json({ message: 'Fakultas dan Prodi tidak sesuai!' })
+  if (!fakultas || !prodi) {
+    return res.status(400).json({ message: 'Fakultas dan Prodi harus diisi!' })
   }
 
   try {
