@@ -4,6 +4,8 @@ require('dotenv').config()
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 const login = async (req, res) => {
+  console.log('Tesa Log : Ada request login.')
+
   const { username, password } = req.body
 
   try {
@@ -134,6 +136,86 @@ const login = async (req, res) => {
   }
 }
 
+const loginMobile = async (req, res) => {
+  console.log('Tesa Log : Ada request login dari mobile.')
+
+  const { username, password } = req.body
+
+  try {
+    const formdata = new URLSearchParams()
+    formdata.append('username', username)
+    formdata.append('password', password)
+
+    const requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow',
+    }
+
+    const response = await fetch(
+      'https://103.167.217.134/api/jwt-api/do-auth',
+      requestOptions
+    )
+
+    let data = await response.json()
+
+    if (!data.result) {
+      return res
+        .status(401)
+        .json({ message: 'Login gagal. Periksa kembali kredensial Anda.' })
+    }
+
+    const [rows] = await pool.query(
+      `SELECT * FROM users WHERE id = ${data.user.user_id}`
+    )
+
+    if (rows.length === 0) {
+      data.is_complete = false
+
+      await pool.query(
+        `INSERT INTO users (id, username, email, role, status, jabatan) 
+            VALUES (?, ?, ?, ?, ?, ?);`,
+        [
+          data.user.user_id,
+          data.user.username,
+          data.user.email,
+          data.user.role,
+          data.user.status,
+          data.user.jabatan.length > 0 ? [data.user.jabatan[0].jabatan] : '-',
+        ]
+      )
+      return res.status(200).json({
+        message: 'Login berhasil.',
+        data: data,
+      })
+    } else {
+      if (rows[0].name) {
+        data.is_complete = true
+        delete data.user
+
+        data.user = rows[0]
+
+        return res.status(200).json({
+          message: 'Login berhasil.',
+          data: data,
+        })
+      } else {
+        data.is_complete = false
+        return res.status(200).json({
+          message: 'Login berhasil.',
+          data: data,
+        })
+      }
+    }
+  } catch (error) {
+    console.log(error)
+
+    return res
+      .status(500)
+      .json({ message: 'Login gagal. Terjadi kesalahan saat login.' })
+  }
+}
+
 const completeData = async (req, res) => {
   const { user_id, name } = req.body
 
@@ -162,4 +244,5 @@ const completeData = async (req, res) => {
 module.exports = {
   login,
   completeData,
+  loginMobile,
 }

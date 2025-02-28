@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="membuat login staff perpustakaan">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/BookService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/BookService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/TugasAkhirService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/TugasAkhirService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/UserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.js" afterDir="false" />
-    </list>
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="membuat login staff perpustakaan" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -127,6 +122,7 @@
       <workItem from="1740486881333" duration="2701000" />
       <workItem from="1740572346352" duration="22000" />
       <workItem from="1740574333814" duration="5440000" />
+      <workItem from="1740582574087" duration="36000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
