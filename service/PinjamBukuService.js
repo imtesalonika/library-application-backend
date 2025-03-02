@@ -1,8 +1,10 @@
 const pool = require('../config/database')
 
 const getAll = async (req, res) => {
+  const { status } = req.query // Ambil parameter status dari query
+
   try {
-    const [rows] = await pool.query(`
+    let query = `
       SELECT 
         peminjaman.id,
         peminjaman.id_buku,
@@ -16,10 +18,20 @@ const getAll = async (req, res) => {
         peminjaman.updated_at
       FROM peminjaman
       JOIN buku ON peminjaman.id_buku = buku.id
-      JOIN users ON peminjaman.id_user = users.id;
-    `)
+      JOIN users ON peminjaman.id_user = users.id
+    `
+
+    let params = []
+    if (status) {
+      query += ` WHERE peminjaman.status = ?` // Tambahkan kondisi WHERE jika ada status
+      params.push(status)
+    }
+
+    const [rows] = await pool.query(query, params) // Jalankan query dengan atau tanpa parameter status
+
     return res.status(200).json({ message: 'success', data: rows })
   } catch (error) {
+    console.error(error)
     return res
       .status(400)
       .json({ message: 'Gagal mendapatkan data peminjaman!', data: null })
