@@ -246,8 +246,27 @@ const completeData = async (req, res) => {
   }
 }
 
+const visit = async (req, res) => {
+  try {
+    await pool.query(
+      `INSERT INTO visitor_logs (visit_time) VALUES (NOW());`
+    )
+
+    return res.status(200).json({
+      message: 'Log berhasil dicatat.',
+      data: null,
+    })
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json({ message: 'Terjadi kesalahan saat login.', data: null })
+  }
+}
+
 module.exports = {
   login,
   completeData,
   loginMobile,
+  visit
 }
