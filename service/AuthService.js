@@ -264,9 +264,29 @@ const visit = async (req, res) => {
   }
 }
 
+const getTotalVisit = async (req, res) => {
+  try {
+    const [row] = await pool.query(
+      `SELECT * FROM visitor_logs 
+        WHERE DATE(visit_time) = CURDATE();`
+    )
+
+    return res.status(200).json({
+      message: 'Success',
+      data: row,
+    })
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json({ message: 'Terjadi kesalahan saat login.', data: null })
+  }
+}
+
 module.exports = {
   login,
   completeData,
   loginMobile,
-  visit
+  visit,
+  getTotalVisit
 }
