@@ -22,10 +22,6 @@ app.use(bodyParser.json())
 // Endpoint utama untuk mengecek status API
 app.get('/', async (req, res) => {
   res.send('User API is Running')
-
-  const response = await axios.get('https://cis.del.ac.id')
-
-  console.log(response)
 })
 
 app.use('/api/users', userController)
