@@ -44,6 +44,22 @@ const getById = async (req, res) => {
   }
 }
 
+const getAll = async (req, res) => {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM users;`)
+    if (rows.length === 0) {
+      return res.status(404).json({
+        message: `Tidak ada user!`,
+        data: null,
+      })
+    }
+    return res.status(200).json({ message: 'ok', data: rows })
+  } catch (error) {
+    console.error(error)
+    return res.status(404).json({ message: 'User tidak ditemukan' })
+  }
+}
+
 const updateUser = async (req, res) => {
   const { id, name } = req.body
 
@@ -101,4 +117,5 @@ module.exports = {
   create,
   getById,
   updateUser,
+  getAll
 }
