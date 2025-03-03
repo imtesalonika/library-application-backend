@@ -75,7 +75,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
-    `CREATE TABLE visitor_logs (
+  `CREATE TABLE visitor_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`,
@@ -85,6 +85,7 @@ const queries = [
   id_buku INT(11),
   id_user INT(11),
   tanggal_pinjam TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  batas_peminjaman TIMESTAMP GENERATED ALWAYS AS (tanggal_pinjam + INTERVAL 7 DAY) STORED,
   tanggal_kembali TIMESTAMP NULL,
   status VARCHAR(50),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -92,6 +93,7 @@ const queries = [
   FOREIGN KEY (id_buku) REFERENCES buku(id),
   FOREIGN KEY (id_user) REFERENCES users(id)
 );
+
     `,
 ]
 ;(async () => {
