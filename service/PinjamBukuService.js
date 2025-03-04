@@ -6,22 +6,39 @@ const getAll = async (req, res) => {
   try {
     let query = `
       SELECT 
-        peminjaman.id,
-        peminjaman.id_buku,
-        buku.judul AS judul_buku,
-        peminjaman.id_user,
-        users.name AS nama_user,
-        peminjaman.tanggal_pinjam,
-        peminjaman.batas_peminjaman,
-        peminjaman.tanggal_kembali,
-        peminjaman.status,
-        peminjaman.gambar,
-        peminjaman.created_at,
-        peminjaman.updated_at
-        peminjaman
-      FROM peminjaman
-      JOIN buku ON peminjaman.id_buku = buku.id
-      JOIN users ON peminjaman.id_user = users.id
+        p.id AS id_peminjaman,
+        p.id_buku,
+        b.judul AS judul_buku,
+        b.penulis,
+        b.penerbit,
+        b.tahun_terbit,
+        b.isbn,
+        b.jumlah_halaman,
+        b.bahasa,
+        b.edisi,
+        b.abstrak,
+        b.status AS status_buku,
+        b.lokasi AS lokasi_buku,
+        b.banyak_buku,
+        b.gambar AS gambar_buku,
+        p.id_user,
+        u.name AS nama_peminjam,
+        u.username,
+        u.email,
+        u.role,
+        u.status AS status_user,
+        u.jabatan,
+        u.foto_profil,
+        p.tanggal_pinjam,
+        p.batas_peminjaman,
+        p.tanggal_kembali,
+        p.status AS status_peminjaman,
+        p.gambar AS gambar_peminjaman,
+        p.created_at AS created_at_peminjaman,
+        p.updated_at AS updated_at_peminjaman
+    FROM peminjaman p
+    JOIN users u ON p.id_user = u.id
+    JOIN buku b ON p.id_buku = b.id;
     `
 
     let params = []
