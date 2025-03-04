@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menyesuaikan logic getall peminjaman buku">
+    <list default="true" id="230c80e2-8ffd-40cd-a27e-cd05c3dd0ed2" name="Changes" comment="menambahkan filtering pada get peminjaman">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/PinjamBukuController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/PinjamBukuController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration.js" beforeDir="false" afterPath="$PROJECT_DIR$/migration.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/PinjamBukuService.js" beforeDir="false" afterPath="$PROJECT_DIR$/service/PinjamBukuService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,24 +45,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Tesalonika Sitopu/Documents/DOKUMEN TA KEL 7/library-application-backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\Tesalonika Sitopu\\Documents\\DOKUMEN TA KEL 7\\library-application-backend\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Tesalonika Sitopu/Documents/DOKUMEN TA KEL 7/library-application-backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Tesalonika Sitopu\\Documents\\DOKUMEN TA KEL 7\\library-application-backend\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tesalonika Sitopu\Documents\DOKUMEN TA KEL 7\library-application-backend" />
@@ -121,7 +123,9 @@
       <workItem from="1740574333814" duration="5440000" />
       <workItem from="1740582574087" duration="36000" />
       <workItem from="1741008924734" duration="860000" />
-      <workItem from="1741057886429" duration="4572000" />
+      <workItem from="1741057886429" duration="4872000" />
+      <workItem from="1741063798134" duration="909000" />
+      <workItem from="1741074812844" duration="2456000" />
     </task>
     <task id="LOCAL-00001" summary="menambahkan prettier">
       <option name="closed" value="true" />
@@ -315,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741061428892</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="menambahkan filtering pada get peminjaman">
+      <option name="closed" value="true" />
+      <created>1741063384590</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1741063384590</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,6 +352,7 @@
     <MESSAGE value="membuat kode migrasi tabel dari SIPP untuk tugas akhir dan fix beberapa bug." />
     <MESSAGE value="membuat login staff perpustakaan" />
     <MESSAGE value="menyesuaikan logic getall peminjaman buku" />
-    <option name="LAST_COMMIT_MESSAGE" value="menyesuaikan logic getall peminjaman buku" />
+    <MESSAGE value="menambahkan filtering pada get peminjaman" />
+    <option name="LAST_COMMIT_MESSAGE" value="menambahkan filtering pada get peminjaman" />
   </component>
 </project>

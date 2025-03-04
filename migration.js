@@ -79,13 +79,12 @@ const queries = [
     id INT AUTO_INCREMENT PRIMARY KEY,
     visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`,
-  `
-    CREATE TABLE peminjaman (
+  `CREATE TABLE peminjaman (
   id INT(11) AUTO_INCREMENT PRIMARY KEY,
   id_buku INT(11),
   id_user INT(11),
   tanggal_pinjam TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  batas_peminjaman TIMESTAMP GENERATED ALWAYS AS (tanggal_pinjam + INTERVAL 7 DAY) STORED,
+  batas_peminjaman TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL 7 DAY), -- Default value
   tanggal_kembali TIMESTAMP NULL,
   status VARCHAR(50),
   gambar VARCHAR(255),
@@ -93,9 +92,7 @@ const queries = [
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (id_buku) REFERENCES buku(id),
   FOREIGN KEY (id_user) REFERENCES users(id)
-);
-
-    `,
+);`,
 ]
 ;(async () => {
   const connection = await mysql.createConnection(config)

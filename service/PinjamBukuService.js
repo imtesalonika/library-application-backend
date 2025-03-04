@@ -165,4 +165,34 @@ const update = async (req, res) => {
   }
 }
 
-module.exports = { getAll, create, getById, remove, update }
+const perpanjang = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [currentData] = await pool.query(
+      `SELECT * from peminjaman WHERE id = ?;`,
+      [id]
+    )
+
+    if (currentData[0].status === 'DONE') {
+      await pool.query(
+        `UPDATE peminjaman SET batas_peminjaman = DATE_ADD(batas_peminjaman, INTERVAL 7 DAY), tanggal_kembali = null, status = ? WHERE id = ?;`,
+        ['IS BEING BORROWED', id]
+      )
+    } else {
+      await pool.query(
+        `UPDATE peminjaman SET batas_peminjaman = DATE_ADD(batas_peminjaman, INTERVAL 7 DAY) WHERE id = ?;`,
+        [id]
+      )
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Berhasil diperpanjang 7 hari.', data: null })
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ message: 'Gagal memperpanjang!', data: null })
+  }
+}
+
+module.exports = { getAll, create, getById, remove, update, perpanjang }
