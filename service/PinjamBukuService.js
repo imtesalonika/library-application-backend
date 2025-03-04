@@ -1,51 +1,55 @@
 const pool = require('../config/database')
 
 const getAll = async (req, res) => {
-  const { status } = req.query // Ambil parameter status dari query
+  const { start_date, end_date } = req.query // Ambil parameter status dari query
 
   try {
-    let query = `
-      SELECT 
-        p.id AS id_peminjaman,
-        p.id_buku,
-        b.judul AS judul_buku,
-        b.penulis,
-        b.penerbit,
-        b.tahun_terbit,
-        b.isbn,
-        b.jumlah_halaman,
-        b.bahasa,
-        b.edisi,
-        b.abstrak,
-        b.status AS status_buku,
-        b.lokasi AS lokasi_buku,
-        b.banyak_buku,
-        b.gambar AS gambar_buku,
-        p.id_user,
-        u.name AS nama_peminjam,
-        u.username,
-        u.email,
-        u.role,
-        u.status AS status_user,
-        u.jabatan,
-        u.foto_profil,
-        p.tanggal_pinjam,
-        p.batas_peminjaman,
-        p.tanggal_kembali,
-        p.status AS status_peminjaman,
-        p.gambar AS gambar_peminjaman,
-        p.created_at AS created_at_peminjaman,
-        p.updated_at AS updated_at_peminjaman
-    FROM peminjaman p
-    JOIN users u ON p.id_user = u.id
-    JOIN buku b ON p.id_buku = b.id;
-    `
+    let query = `SELECT 
+          p.id AS id_peminjaman,
+          p.id_buku,
+          b.judul AS judul_buku,
+          b.penulis,
+          b.penerbit,
+          b.tahun_terbit,
+          b.isbn,
+          b.jumlah_halaman,
+          b.bahasa,
+          b.edisi,
+          b.abstrak,
+          b.status AS status_buku,
+          b.lokasi AS lokasi_buku,
+          b.banyak_buku,
+          b.gambar AS gambar_buku,
+          p.id_user,
+          u.name AS nama_peminjam,
+          u.username,
+          u.email,
+          u.role,
+          u.status AS status_user,
+          u.jabatan,
+          u.foto_profil,
+          p.tanggal_pinjam,
+          p.batas_peminjaman,
+          p.tanggal_kembali,
+          p.status AS status_peminjaman,
+          p.gambar AS gambar_peminjaman,
+          p.created_at AS created_at_peminjaman,
+          p.updated_at AS updated_at_peminjaman
+      FROM peminjaman p
+      JOIN users u ON p.id_user = u.id
+      JOIN buku b ON p.id_buku = b.id
+      WHERE 
+          (COALESCE(?, '') = '' OR p.tanggal_pinjam >= ?) 
+          AND 
+          (COALESCE(?, '') = '' OR p.tanggal_pinjam <= ?);
+`
 
-    let params = []
-    if (status) {
-      query += ` WHERE peminjaman.status = ?` // Tambahkan kondisi WHERE jika ada status
-      params.push(status)
-    }
+    const params = [
+      start_date || null,
+      start_date || null,
+      end_date || null,
+      end_date || null,
+    ]
 
     const [rows] = await pool.query(query, params) // Jalankan query dengan atau tanpa parameter status
 
