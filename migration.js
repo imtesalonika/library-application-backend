@@ -88,6 +88,7 @@ const queries = [
   batas_peminjaman TIMESTAMP GENERATED ALWAYS AS (tanggal_pinjam + INTERVAL 7 DAY) STORED,
   tanggal_kembali TIMESTAMP NULL,
   status VARCHAR(50),
+  gambar VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (id_buku) REFERENCES buku(id),

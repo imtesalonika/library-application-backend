@@ -12,10 +12,13 @@ const getAll = async (req, res) => {
         peminjaman.id_user,
         users.name AS nama_user,
         peminjaman.tanggal_pinjam,
+        peminjaman.batas_peminjaman,
         peminjaman.tanggal_kembali,
         peminjaman.status,
+        peminjaman.gambar,
         peminjaman.created_at,
         peminjaman.updated_at
+        peminjaman
       FROM peminjaman
       JOIN buku ON peminjaman.id_buku = buku.id
       JOIN users ON peminjaman.id_user = users.id
@@ -39,7 +42,7 @@ const getAll = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const { id_buku, id_user, tanggal_pinjam, status } = req.body
+  const { id_buku, id_user, tanggal_pinjam, status, gambar } = req.body
 
   if (!id_buku || !id_user || !tanggal_pinjam || !status) {
     return res
@@ -48,9 +51,10 @@ const create = async (req, res) => {
   }
 
   try {
+    // Include gambar field in the query
     const [result] = await pool.query(
-      `INSERT INTO peminjaman (id_buku, id_user, tanggal_pinjam, status) VALUES (?, ?, ?, ?);`,
-      [id_buku, id_user, tanggal_pinjam, status]
+      `INSERT INTO peminjaman (id_buku, id_user, tanggal_pinjam, status, gambar) VALUES (?, ?, ?, ?, ?);`,
+      [id_buku, id_user, tanggal_pinjam, status, gambar]
     )
     return res.status(201).json({
       message: 'Peminjaman berhasil ditambahkan.',
