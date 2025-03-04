@@ -41,7 +41,8 @@ const getAll = async (req, res) => {
       WHERE 
           (COALESCE(?, '') = '' OR p.tanggal_pinjam >= ?) 
           AND 
-          (COALESCE(?, '') = '' OR p.tanggal_pinjam <= ?);
+          (COALESCE(?, '') = '' OR p.tanggal_pinjam <= ?)
+          ORDER BY p.tanggal_pinjam DESC;
 `
 
     const params = [
