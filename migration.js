@@ -83,7 +83,8 @@ const queries = [
   id INT(11) AUTO_INCREMENT PRIMARY KEY,
   id_buku INT(11),
   id_user INT(11),
-  tanggal_pinjam TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  tanggal_request TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Kolom baru untuk menyimpan tanggal permintaan
+  tanggal_pinjam TIMESTAMP NULL,
   batas_peminjaman TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL 7 DAY), -- Default value
   tanggal_kembali TIMESTAMP NULL,
   status VARCHAR(50),

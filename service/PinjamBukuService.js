@@ -28,6 +28,7 @@ const getAll = async (req, res) => {
           u.status AS status_user,
           u.jabatan,
           u.foto_profil,
+          p.tanggal_request,
           p.tanggal_pinjam,
           p.batas_peminjaman,
           p.tanggal_kembali,
@@ -39,11 +40,10 @@ const getAll = async (req, res) => {
       JOIN users u ON p.id_user = u.id
       JOIN buku b ON p.id_buku = b.id
       WHERE 
-          (COALESCE(?, '') = '' OR p.tanggal_pinjam >= ?) 
+          (COALESCE(?, '') = '' OR p.tanggal_request >= ?) 
           AND 
-          (COALESCE(?, '') = '' OR p.tanggal_pinjam <= ?)
-          ORDER BY p.tanggal_pinjam DESC;
-`
+          (COALESCE(?, '') = '' OR p.tanggal_request <= ?)
+      ORDER BY p.tanggal_request DESC;`
 
     const params = [
       start_date || null,
@@ -64,19 +64,18 @@ const getAll = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const { id_buku, id_user, tanggal_pinjam, status, gambar } = req.body
+  const { id_buku, id_user, gambar } = req.body
 
-  if (!id_buku || !id_user || !tanggal_pinjam || !status) {
+  if (!id_buku || !id_user) {
     return res
       .status(400)
       .json({ message: 'Semua field harus diisi!', data: null })
   }
 
   try {
-    // Include gambar field in the query
     const [result] = await pool.query(
-      `INSERT INTO peminjaman (id_buku, id_user, tanggal_pinjam, status, gambar) VALUES (?, ?, ?, ?, ?);`,
-      [id_buku, id_user, tanggal_pinjam, status, gambar]
+      `INSERT INTO peminjaman (id_buku, id_user, tanggal_request, status, gambar) VALUES (?, ?, CURRENT_TIMESTAMP, 'REQ', ?);`,
+      [id_buku, id_user, gambar] // Set status to 'REQ' and generate tanggal_request
     )
     return res.status(201).json({
       message: 'Peminjaman berhasil ditambahkan.',
@@ -142,6 +141,9 @@ const update = async (req, res) => {
     let query, params
     if (status === 'DONE') {
       query = `UPDATE peminjaman SET status = ?, tanggal_kembali = ? WHERE id = ?;`
+      params = [status, new Date(), id]
+    } else if (status === 'ACCEPTED') {
+      query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 7 DAY) WHERE id = ?;`
       params = [status, new Date(), id]
     } else {
       query = `UPDATE peminjaman SET status = ? WHERE id = ?;`
