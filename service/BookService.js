@@ -2,20 +2,30 @@ const pool = require('../config/database')
 
 const getAll = async (req, res) => {
   try {
-    const [rowsPosts] = await pool.query(`
-       SELECT * FROM buku;
-   `)
+    const { search } = req.query; // Ambil query parameter `search`
+
+    let query = `SELECT * FROM buku`;
+    let params = [];
+
+    if (search) {
+      query += ` WHERE judul LIKE ?`;
+      params.push(`%${search}%`);
+    }
+
+    const [rowsPosts] = await pool.query(query, params);
 
     return res.status(200).json({
       message: 'success',
       data: rowsPosts,
-    })
+    });
   } catch (error) {
-    return res
-      .status(400)
-      .json({ message: 'Gagal untuk mendapatkan buku!', data: null })
+    return res.status(400).json({
+      message: 'Gagal untuk mendapatkan buku!',
+      data: null,
+      error: error.message,
+    });
   }
-}
+};
 
 const create = async (req, res) => {
   const {
