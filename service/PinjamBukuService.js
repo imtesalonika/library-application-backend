@@ -1,7 +1,8 @@
 const pool = require('../config/database')
+const moment = require('moment-timezone')
 
 const getAll = async (req, res) => {
-  const { start_date, end_date } = req.query // Ambil parameter status dari query
+  const { start_date, end_date } = req.query
 
   try {
     let query = `SELECT 
@@ -52,7 +53,7 @@ const getAll = async (req, res) => {
       end_date || null,
     ]
 
-    const [rows] = await pool.query(query, params) // Jalankan query dengan atau tanpa parameter status
+    const [rows] = await pool.query(query, params)
 
     return res.status(200).json({ message: 'success', data: rows })
   } catch (error) {
@@ -73,10 +74,16 @@ const create = async (req, res) => {
   }
 
   try {
+    // Generate tanggal_request dengan zona waktu WIB
+    const tanggal_request = moment
+      .tz('Asia/Jakarta')
+      .format('YYYY-MM-DD HH:mm:ss')
+
     const [result] = await pool.query(
-      `INSERT INTO peminjaman (id_buku, id_user, tanggal_request, status, gambar) VALUES (?, ?, CURRENT_TIMESTAMP, 'REQ', ?);`,
-      [id_buku, id_user, gambar] // Set status to 'REQ' and generate tanggal_request
+      `INSERT INTO peminjaman (id_buku, id_user, tanggal_request, status, gambar) VALUES (?, ?, ?, 'REQ', ?);`,
+      [id_buku, id_user, tanggal_request, gambar]
     )
+
     return res.status(201).json({
       message: 'Peminjaman berhasil ditambahkan.',
       data: { id: result.insertId },
@@ -86,46 +93,6 @@ const create = async (req, res) => {
     return res
       .status(400)
       .json({ message: 'Gagal menambahkan peminjaman!', data: null })
-  }
-}
-
-const getById = async (req, res) => {
-  const { id } = req.params
-  try {
-    const [rows] = await pool.query(`SELECT * FROM peminjaman WHERE id = ?;`, [
-      id,
-    ])
-    if (rows.length === 0) {
-      return res
-        .status(404)
-        .json({ message: 'Peminjaman tidak ditemukan!', data: null })
-    }
-    return res.status(200).json({ message: 'success', data: rows[0] })
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: 'Gagal mendapatkan data peminjaman!', data: null })
-  }
-}
-
-const remove = async (req, res) => {
-  const { id } = req.params
-  try {
-    const [result] = await pool.query(`DELETE FROM peminjaman WHERE id = ?;`, [
-      id,
-    ])
-    if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ message: 'Peminjaman tidak ditemukan!', data: null })
-    }
-    return res
-      .status(200)
-      .json({ message: 'Peminjaman berhasil dihapus.', data: null })
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: 'Gagal menghapus peminjaman!', data: null })
   }
 }
 
@@ -140,11 +107,21 @@ const update = async (req, res) => {
   try {
     let query, params
     if (status === 'DONE') {
+      const tanggal_kembali = moment
+        .tz('Asia/Jakarta')
+        .format('YYYY-MM-DD HH:mm:ss')
       query = `UPDATE peminjaman SET status = ?, tanggal_kembali = ? WHERE id = ?;`
-      params = [status, new Date(), id]
+      params = [status, tanggal_kembali, id]
     } else if (status === 'ACCEPTED') {
-      query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 7 DAY) WHERE id = ?;`
-      params = [status, new Date(), id]
+      const tanggal_pinjam = moment
+        .tz('Asia/Jakarta')
+        .format('YYYY-MM-DD HH:mm:ss')
+      const batas_peminjaman = moment
+        .tz('Asia/Jakarta')
+        .add(7, 'days')
+        .format('YYYY-MM-DD HH:mm:ss')
+      query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = ? WHERE id = ?;`
+      params = [status, tanggal_pinjam, batas_peminjaman, id]
     } else {
       query = `UPDATE peminjaman SET status = ? WHERE id = ?;`
       params = [status, id]
@@ -198,4 +175,4 @@ const perpanjang = async (req, res) => {
   }
 }
 
-module.exports = { getAll, create, getById, remove, update, perpanjang }
+module.exports = { getAll, create, update, perpanjang }
