@@ -94,6 +94,17 @@ const queries = [
   FOREIGN KEY (id_buku) REFERENCES buku(id),
   FOREIGN KEY (id_user) REFERENCES users(id)
 );`,
+  `
+  CREATE TABLE buku_favorit_user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    buku_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (buku_id) REFERENCES buku(id) ON DELETE CASCADE,
+    UNIQUE (user_id, buku_id) -- Mencegah duplikasi favorit
+);
+`
 ]
 ;(async () => {
   const connection = await mysql.createConnection(config)

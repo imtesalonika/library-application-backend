@@ -35,6 +35,6 @@ app.use('/api/pinjam-buku', pinjamBukuController)
 app.use(express.static('public'))
 
 // Jalankan server
-app.listen(port, () => {
+app. listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })

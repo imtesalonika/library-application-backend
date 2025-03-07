@@ -32,6 +32,43 @@ const getAll = async (req, res) => {
   }
 }
 
+const getFavorite = async (req, res) => {
+  const { user_id } = req.params
+
+  try {
+    const [favorites] = await pool.query(
+      `SELECT 
+            b.id, 
+            b.judul, 
+            b.penulis, 
+            b.penerbit, 
+            b.tahun_terbit, 
+            b.isbn, 
+            b.jumlah_halaman, 
+            b.bahasa, 
+            b.edisi, 
+            b.abstrak, 
+            b.lokasi, 
+            b.banyak_buku, 
+            b.gambar, 
+            uf.created_at AS favorited_at
+        FROM buku_favorit_user uf
+        JOIN buku b ON uf.buku_id = b.id
+        WHERE uf.user_id = ?
+        ORDER BY uf.created_at DESC`,
+      [user_id],
+    )
+
+    console.log(favorites)
+
+    res.json({ message: 'Success', data: favorites })
+  } catch (error) {
+    console.error('Error fetching favorites:', error)
+    res.status(500).json({ data: null, message: 'Gagal mengambil data favorit' })
+  }
+}
+
+
 const create = async (req, res) => {
   const {
     judul,
@@ -226,7 +263,7 @@ const update = async (req, res) => {
         lokasi,
         picturePath ? picturePath : buku[0].gambar,
         +id,
-      ]
+      ],
     )
 
     return res
@@ -239,10 +276,79 @@ const update = async (req, res) => {
   }
 }
 
+const addToFavorite = async (req, res) => {
+  console.log('tambah favbook')
+  const { user_id, book_id } = req.body
+
+  try {
+    const [existing] = await pool.query(
+      'SELECT * FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?',
+      [user_id, book_id],
+    )
+
+    console.log(existing)
+
+    if (existing.length > 0) {
+      return res
+        .status(400)
+        .json({ data: null, message: 'Buku sudah ada di daftar favorit' })
+    }
+
+    await pool.query(
+      'INSERT INTO buku_favorit_user (user_id, buku_id) VALUES (?, ?)',
+      [user_id, book_id],
+    )
+
+    return res
+      .status(200)
+      .json({ data: null, message: 'Buku berhasil ditambahkan ke favorit' })
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(400)
+      .json({ data: null, message: 'Terjadi kesalahan saat menambahkan buku' })
+  }
+}
+
+const removeFromFavorite = async (req, res) => {
+  const { user_id, book_id } = req.body;
+
+  try {
+    const [existing] = await pool.query(
+      "SELECT * FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?",
+      [user_id, book_id]
+    );
+
+    if (existing.length === 0) {
+      return res
+        .status(400)
+        .json({ data: null, message: "Buku tidak ditemukan dalam daftar favorit" });
+    }
+
+    await pool.query(
+      "DELETE FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?",
+      [user_id, book_id]
+    );
+
+    return res
+      .status(200)
+      .json({ data: null, message: "Buku berhasil dihapus dari favorit" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ data: null, message: "Terjadi kesalahan saat menghapus buku" });
+  }
+};
+
+
 module.exports = {
   getAll,
   create,
   getById,
   remove,
   update,
+  addToFavorite,
+  getFavorite,
+  removeFromFavorite
 }
