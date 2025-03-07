@@ -80,7 +80,7 @@ const create = async (req, res) => {
       .format('YYYY-MM-DD HH:mm:ss')
 
     const [result] = await pool.query(
-      `INSERT INTO peminjaman (id_buku, id_user, tanggal_request, status, gambar) VALUES (?, ?, ?, 'REQ', ?);`,
+      `INSERT INTO peminjaman (id_buku, id_user, tanggal_request, status, gambar, batas_peminjaman) VALUES (?, ?, ?, 'REQ', ?, NULL);`,
       [id_buku, id_user, tanggal_request, gambar]
     )
 
@@ -106,13 +106,16 @@ const update = async (req, res) => {
 
   try {
     let query, params
+
     if (status === 'DONE') {
+      // Generate tanggal_kembali dengan zona waktu WIB
       const tanggal_kembali = moment
         .tz('Asia/Jakarta')
         .format('YYYY-MM-DD HH:mm:ss')
+
       query = `UPDATE peminjaman SET status = ?, tanggal_kembali = ? WHERE id = ?;`
       params = [status, tanggal_kembali, id]
-    } else if (status === 'ACCEPTED') {
+    } else if (status === 'IS BEING BORROWED') {
       const tanggal_pinjam = moment
         .tz('Asia/Jakarta')
         .format('YYYY-MM-DD HH:mm:ss')
@@ -120,6 +123,7 @@ const update = async (req, res) => {
         .tz('Asia/Jakarta')
         .add(7, 'days')
         .format('YYYY-MM-DD HH:mm:ss')
+
       query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = ? WHERE id = ?;`
       params = [status, tanggal_pinjam, batas_peminjaman, id]
     } else {
@@ -154,15 +158,33 @@ const perpanjang = async (req, res) => {
       [id]
     )
 
-    if (currentData[0].status === 'DONE') {
+    if (currentData.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Peminjaman tidak ditemukan!', data: null })
+    }
+
+    const peminjaman = currentData[0]
+
+    if (peminjaman.status === 'DONE') {
+      // Jika status DONE, reset tanggal_kembali dan perpanjang batas_peminjaman
+      const batas_peminjaman = moment(peminjaman.batas_peminjaman)
+        .add(7, 'days')
+        .format('YYYY-MM-DD HH:mm:ss')
+
       await pool.query(
-        `UPDATE peminjaman SET batas_peminjaman = DATE_ADD(batas_peminjaman, INTERVAL 7 DAY), tanggal_kembali = null, status = ? WHERE id = ?;`,
-        ['IS BEING BORROWED', id]
+        `UPDATE peminjaman SET batas_peminjaman = ?, tanggal_kembali = NULL, status = ? WHERE id = ?;`,
+        [batas_peminjaman, 'IS BEING BORROWED', id]
       )
     } else {
+      // Jika status bukan DONE, perpanjang batas_peminjaman
+      const batas_peminjaman = moment(peminjaman.batas_peminjaman)
+        .add(7, 'days')
+        .format('YYYY-MM-DD HH:mm:ss')
+
       await pool.query(
-        `UPDATE peminjaman SET batas_peminjaman = DATE_ADD(batas_peminjaman, INTERVAL 7 DAY) WHERE id = ?;`,
-        [id]
+        `UPDATE peminjaman SET batas_peminjaman = ? WHERE id = ?;`,
+        [batas_peminjaman, id]
       )
     }
 
