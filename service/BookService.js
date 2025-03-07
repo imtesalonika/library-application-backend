@@ -2,30 +2,35 @@ const pool = require('../config/database')
 
 const getAll = async (req, res) => {
   try {
-    const { search } = req.query; // Ambil query parameter `search`
+    const { search, sort, order } = req.query // Ambil query parameter `search`, `sort`, dan `order`
 
-    let query = `SELECT * FROM buku`;
-    let params = [];
+    let query = `SELECT * FROM buku`
+    let params = []
 
     if (search) {
-      query += ` WHERE judul LIKE ?`;
-      params.push(`%${search}%`);
+      query += ` WHERE judul LIKE ?`
+      params.push(`%${search}%`)
     }
 
-    const [rowsPosts] = await pool.query(query, params);
+    // Add sorting
+    if (sort && order) {
+      query += ` ORDER BY ${sort} ${order}`
+    }
+
+    const [rowsPosts] = await pool.query(query, params)
 
     return res.status(200).json({
       message: 'success',
       data: rowsPosts,
-    });
+    })
   } catch (error) {
     return res.status(400).json({
       message: 'Gagal untuk mendapatkan buku!',
       data: null,
       error: error.message,
-    });
+    })
   }
-};
+}
 
 const create = async (req, res) => {
   const {
@@ -36,12 +41,28 @@ const create = async (req, res) => {
     isbn,
     jumlah_halaman,
     bahasa,
-    edisi,
     abstrak,
     lokasi,
     status,
     banyak_buku,
   } = req.body
+
+  // Validate required fields
+  if (
+    !judul ||
+    !penulis ||
+    !penerbit ||
+    !tahun_terbit ||
+    !jumlah_halaman ||
+    !bahasa ||
+    !abstrak ||
+    !lokasi ||
+    !banyak_buku
+  ) {
+    return res
+      .status(400)
+      .json({ message: 'Semua field wajib diisi, kecuali edisi dan gambar!' })
+  }
 
   const picturePath = req.file ? `books/${req.file.filename}` : null
 
@@ -70,12 +91,12 @@ const create = async (req, res) => {
           "${isbn}",
           "${+jumlah_halaman}",
           "${bahasa}",
-          "${edisi}",
+          ${req.body.edisi ? `"${req.body.edisi}"` : 'NULL'},  -- Allow NULL for edisi
           "${abstrak}",
           "${status === 'true' ? 1 : 0}",
           "${+banyak_buku}",
           "${lokasi}",
-          "${picturePath ? picturePath : null}"
+          ${picturePath ? `"${picturePath}"` : 'NULL'}  -- Allow NULL for gambar
           ) 
     `)
 
@@ -142,6 +163,23 @@ const update = async (req, res) => {
     banyak_buku,
   } = req.body
 
+  // Validate required fields
+  if (
+    !judul ||
+    !penulis ||
+    !penerbit ||
+    !tahun_terbit ||
+    !jumlah_halaman ||
+    !bahasa ||
+    !abstrak ||
+    !lokasi ||
+    !banyak_buku
+  ) {
+    return res
+      .status(400)
+      .json({ message: 'Semua field wajib diisi, kecuali edisi dan gambar!' })
+  }
+
   const picturePath = req.file ? `books/${req.file.filename}` : null
 
   try {
@@ -152,8 +190,6 @@ const update = async (req, res) => {
         data: `Buku dengan id ${id} tidak ditemukan!`,
       })
     }
-
-    console.log(buku)
 
     // Update data user
     await pool.query(
@@ -176,18 +212,18 @@ const update = async (req, res) => {
             WHERE id = ?;
         `,
       [
-        !judul ? buku[0].judul : judul,
-        !penulis ? buku[0].penulis : penulis,
-        !penerbit ? buku[0].penerbit : penerbit,
-        !tahun_terbit ? buku[0].tahun_terbit : +tahun_terbit,
+        judul,
+        penulis,
+        penerbit,
+        +tahun_terbit,
         isbn === 'null' ? buku[0].isbn : isbn,
-        !jumlah_halaman ? buku[0].jumlah_halaman : +jumlah_halaman,
-        !bahasa ? buku[0].bahasa : bahasa,
-        !edisi ? buku[0].edisi : edisi,
-        !abstrak ? buku[0].abstrak : abstrak,
-        !status ? buku[0].status : status === 'true' ? 1 : 0,
-        !banyak_buku ? buku[0].banyak_buku : banyak_buku,
-        lokasi === 'null' ? buku[0].lokasi : lokasi,
+        +jumlah_halaman,
+        bahasa,
+        edisi ? edisi : null, // Allow NULL for edisi
+        abstrak,
+        status === 'true' ? 1 : 0,
+        banyak_buku,
+        lokasi,
         picturePath ? picturePath : buku[0].gambar,
         +id,
       ]
