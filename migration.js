@@ -79,31 +79,22 @@ const queries = [
       id INT AUTO_INCREMENT PRIMARY KEY,
       visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`,
-    `CREATE TABLE peminjaman (
-      id INT(11) AUTO_INCREMENT PRIMARY KEY,
-      id_buku INT(11),
-      id_user INT(11),
-      tanggal_request TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Kolom baru untuk menyimpan tanggal permintaan
-      tanggal_pinjam TIMESTAMP NULL,
-      batas_peminjaman TIMESTAMP NULL,
-      tanggal_kembali TIMESTAMP NULL,
-      status VARCHAR(50),
-      gambar VARCHAR(255),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (id_buku) REFERENCES buku(id),
-      FOREIGN KEY (id_user) REFERENCES users(id)
-    );`,
-    `CREATE TABLE buku_favorit_user (
-      id INT PRIMARY KEY AUTO_INCREMENT,
-      user_id INT NOT NULL,
-      buku_id INT NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-      FOREIGN KEY (buku_id) REFERENCES buku(id) ON DELETE CASCADE,
-      UNIQUE (user_id, buku_id)
-    );`,
-  ]
+  `CREATE TABLE peminjaman (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  id_buku INT(11),
+  id_user INT(11),
+  tanggal_request TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Kolom baru untuk menyimpan tanggal permintaan
+  tanggal_pinjam TIMESTAMP NULL,
+  batas_peminjaman TIMESTAMP NULL,
+  tanggal_kembali TIMESTAMP NULL,
+  status VARCHAR(50),
+  gambar VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_buku) REFERENCES buku(id),
+  FOREIGN KEY (id_user) REFERENCES users(id)
+);`,
+]
 ;(async () => {
   const connection = await mysql.createConnection(config)
 
