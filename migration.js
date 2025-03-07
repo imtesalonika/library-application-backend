@@ -85,7 +85,7 @@ const queries = [
   id_user INT(11),
   tanggal_request TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Kolom baru untuk menyimpan tanggal permintaan
   tanggal_pinjam TIMESTAMP NULL,
-  batas_peminjaman TIMESTAMP NULL
+  batas_peminjaman TIMESTAMP NULL,
   tanggal_kembali TIMESTAMP NULL,
   status VARCHAR(50),
   gambar VARCHAR(255),
