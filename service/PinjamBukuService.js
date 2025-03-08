@@ -79,6 +79,18 @@ const create = async (req, res) => {
       .tz('Asia/Jakarta')
       .format('YYYY-MM-DD HH:mm:ss')
 
+    const [temp_book] =  await pool.query(
+      `SELECT * from buku where id = ?`,
+      [id_buku]
+    )
+
+    if (temp_book[0].banyak_buku === 0) {
+      return res.status(400).json({
+        message : 'Buku sudah tidak tersedia.',
+        data: null
+      })
+    }
+
     const [result] = await pool.query(
       `INSERT INTO peminjaman (id_buku, id_user, tanggal_request, status, gambar, batas_peminjaman) VALUES (?, ?, ?, 'REQ', ?, NULL);`,
       [id_buku, id_user, tanggal_request, gambar]
@@ -98,7 +110,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params
-  const { status } = req.body
+  const { status, id_buku } = req.body
 
   if (!status) {
     return res.status(400).json({ message: 'Status harus diisi!', data: null })
@@ -113,6 +125,20 @@ const update = async (req, res) => {
         .tz('Asia/Jakarta')
         .format('YYYY-MM-DD HH:mm:ss')
 
+      const [temp_book] =  await pool.query(
+        `SELECT * from buku where id = ?`,
+        [id_buku]
+      )
+
+      await pool.query(
+        `UPDATE buku 
+            SET 
+            status = ?,
+            banyak_buku = ?
+            WHERE id = ?;`,
+        [temp_book[0].banyak_buku + 1 > 0, temp_book[0].banyak_buku + 1, id_buku]
+      )
+
       query = `UPDATE peminjaman SET status = ?, tanggal_kembali = ? WHERE id = ?;`
       params = [status, tanggal_kembali, id]
     } else if (status === 'IS BEING BORROWED') {
@@ -123,6 +149,27 @@ const update = async (req, res) => {
         .tz('Asia/Jakarta')
         .add(7, 'days')
         .format('YYYY-MM-DD HH:mm:ss')
+
+      const [temp_book] =  await pool.query(
+        `SELECT * from buku where id = ?`,
+        [id_buku]
+      )
+
+      if (temp_book[0].banyak_buku === 0) {
+        return res.status(400).json({
+          message : 'Buku sudah tidak tersedia.',
+          data: null
+        })
+      }
+
+      await pool.query(
+        `UPDATE buku 
+            SET 
+            status = ?,
+            banyak_buku = ?
+            WHERE id = ?;`,
+        [temp_book[0].banyak_buku - 1 > 0, temp_book[0].banyak_buku - 1, id_buku]
+      )
 
       query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = ? WHERE id = ?;`
       params = [status, tanggal_pinjam, batas_peminjaman, id]
