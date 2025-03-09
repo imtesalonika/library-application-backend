@@ -9,21 +9,22 @@ const commentController = require('./controllers/PostCommentController')
 const tugasakhirController = require('./controllers/TugasAkhirController')
 const pinjamBukuController = require('./controllers/PinjamBukuController')
 const cors = require('cors')
-const axios = require('axios')
+const path = require('path')
 
 const app = express()
 const port = 3000
 
+// Middleware
 app.use(cors())
-
-// Middleware untuk parsing JSON
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-// Endpoint utama untuk mengecek status API
-app.get('/', async (req, res) => {
+// Route utama
+app.get('/', (req, res) => {
   res.send('User API is Running')
 })
 
+// API Routes
 app.use('/api/users', userController)
 app.use('/api/auth', authController)
 app.use('/api/like', likeController)
@@ -32,6 +33,12 @@ app.use('/api/pengumuman', pengumumanController)
 app.use('/api/book', bookController)
 app.use('/api/tugasakhir', tugasakhirController)
 app.use('/api/pinjam-buku', pinjamBukuController)
+
+// Static Files
+app.use(
+  '/uploads',
+  express.static(path.join(__dirname, 'public/pengumuman_files'))
+)
 app.use(express.static('public'))
 
 // Jalankan server
