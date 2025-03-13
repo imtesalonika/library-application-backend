@@ -1,7 +1,7 @@
 const pool = require('../config/database')
 require('dotenv').config()
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1'
 
 const login = async (req, res) => {
   console.log('Tesa Log : Ada request login.')
@@ -185,7 +185,8 @@ const loginMobile = async (req, res) => {
         ]
       )
       return res.status(200).json({
-        message: 'Login berhasil. Tapi kamu perlu melengkapi nama kamu terlebih dahulu.',
+        message:
+          'Login berhasil. Tapi kamu perlu melengkapi nama kamu terlebih dahulu.',
         data: data,
       })
     } else {
@@ -202,7 +203,8 @@ const loginMobile = async (req, res) => {
       } else {
         data.is_complete = false
         return res.status(200).json({
-          message: 'Login berhasil. Tapi kamu perlu melengkapi nama kamu terlebih dahulu.',
+          message:
+            'Login berhasil. Tapi kamu perlu melengkapi nama kamu terlebih dahulu.',
           data: data,
         })
       }
@@ -217,12 +219,11 @@ const loginMobile = async (req, res) => {
 }
 
 const completeData = async (req, res) => {
-  console.log('Tesa Log : Ada request complete data');
-  
+  console.log('Tesa Log : Ada request complete data')
+
   const { user_id, name } = req.body
 
-  console.log(req.body);
-  
+  console.log(req.body)
 
   try {
     await pool.query(
@@ -248,9 +249,7 @@ const completeData = async (req, res) => {
 
 const visit = async (req, res) => {
   try {
-    await pool.query(
-      `INSERT INTO visitor_logs (visit_time) VALUES (NOW());`
-    )
+    await pool.query(`INSERT INTO visitor_logs (visit_time) VALUES (NOW());`)
 
     return res.status(200).json({
       message: 'Log berhasil dicatat.',
@@ -288,5 +287,5 @@ module.exports = {
   completeData,
   loginMobile,
   visit,
-  getTotalVisit
+  getTotalVisit,
 }
