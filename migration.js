@@ -15,13 +15,14 @@ const config = {
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
+  timezone: '+07:00',
 }
 
 const queries = [
-    `DROP DATABASE IF EXISTS library_application_del`,
-    `CREATE DATABASE library_application_del`,
-    `USE library_application_del`,
-    `CREATE TABLE buku (
+  `DROP DATABASE IF EXISTS library_application_del`,
+  `CREATE DATABASE library_application_del`,
+  `USE library_application_del`,
+  `CREATE TABLE buku (
         id int PRIMARY KEY AUTO_INCREMENT,
         judul VARCHAR(255) NOT NULL,
         penulis VARCHAR(255) NOT NULL,
@@ -39,7 +40,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
-    `CREATE TABLE tugasakhir (
+  `CREATE TABLE tugasakhir (
           id int PRIMARY KEY AUTO_INCREMENT,
           judul VARCHAR(255) NOT NULL,
           penulis VARCHAR(255) NOT NULL,
@@ -54,7 +55,7 @@ const queries = [
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );`,
-    `CREATE TABLE pengumuman (
+  `CREATE TABLE pengumuman (
         id int PRIMARY KEY AUTO_INCREMENT,
         judul VARCHAR(255) NOT NULL,
         isi TEXT NOT NULL,
@@ -63,7 +64,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
-    `CREATE TABLE users (
+  `CREATE TABLE users (
         id int PRIMARY KEY,
         name VARCHAR(255),
         username VARCHAR(30),
@@ -75,7 +76,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );`,
-    `CREATE TABLE visitor_logs (
+  `CREATE TABLE visitor_logs (
       id INT AUTO_INCREMENT PRIMARY KEY,
       visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`,
@@ -104,7 +105,7 @@ const queries = [
     FOREIGN KEY (buku_id) REFERENCES buku(id) ON DELETE CASCADE,
     UNIQUE (user_id, buku_id) -- Mencegah duplikasi favorit
 );
-`
+`,
 ]
 ;(async () => {
   const connection = await mysql.createConnection(config)
