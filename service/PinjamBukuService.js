@@ -2,7 +2,7 @@ const pool = require('../config/database')
 const moment = require('moment-timezone')
 
 const getAll = async (req, res) => {
-  const { start_date, end_date } = req.query
+  const { start_date, end_date, id_user } = req.query
 
   try {
     let query = `SELECT 
@@ -43,8 +43,7 @@ const getAll = async (req, res) => {
       WHERE 
           (COALESCE(?, '') = '' OR p.tanggal_request >= ?) 
           AND 
-          (COALESCE(?, '') = '' OR p.tanggal_request <= ?)
-      ORDER BY p.tanggal_request DESC;`
+          (COALESCE(?, '') = '' OR p.tanggal_request <= ?)`
 
     const params = [
       start_date || null,
@@ -52,6 +51,14 @@ const getAll = async (req, res) => {
       end_date || null,
       end_date || null,
     ]
+
+    // Tambahkan filter berdasarkan id_user jika ada
+    if (id_user) {
+      query += ` AND p.id_user = ?`
+      params.push(id_user)
+    }
+
+    query += ` ORDER BY p.tanggal_request DESC;`
 
     const [rows] = await pool.query(query, params)
 
@@ -79,15 +86,14 @@ const create = async (req, res) => {
       .tz('Asia/Jakarta')
       .format('YYYY-MM-DD HH:mm:ss')
 
-    const [temp_book] =  await pool.query(
-      `SELECT * from buku where id = ?`,
-      [id_buku]
-    )
+    const [temp_book] = await pool.query(`SELECT * from buku where id = ?`, [
+      id_buku,
+    ])
 
     if (temp_book[0].banyak_buku === 0) {
       return res.status(400).json({
-        message : 'Buku sudah tidak tersedia.',
-        data: null
+        message: 'Buku sudah tidak tersedia.',
+        data: null,
       })
     }
 
@@ -125,10 +131,9 @@ const update = async (req, res) => {
         .tz('Asia/Jakarta')
         .format('YYYY-MM-DD HH:mm:ss')
 
-      const [temp_book] =  await pool.query(
-        `SELECT * from buku where id = ?`,
-        [id_buku]
-      )
+      const [temp_book] = await pool.query(`SELECT * from buku where id = ?`, [
+        id_buku,
+      ])
 
       await pool.query(
         `UPDATE buku 
@@ -136,7 +141,11 @@ const update = async (req, res) => {
             status = ?,
             banyak_buku = ?
             WHERE id = ?;`,
-        [temp_book[0].banyak_buku + 1 > 0, temp_book[0].banyak_buku + 1, id_buku]
+        [
+          temp_book[0].banyak_buku + 1 > 0,
+          temp_book[0].banyak_buku + 1,
+          id_buku,
+        ]
       )
 
       query = `UPDATE peminjaman SET status = ?, tanggal_kembali = ? WHERE id = ?;`
@@ -150,15 +159,14 @@ const update = async (req, res) => {
         .add(7, 'days')
         .format('YYYY-MM-DD HH:mm:ss')
 
-      const [temp_book] =  await pool.query(
-        `SELECT * from buku where id = ?`,
-        [id_buku]
-      )
+      const [temp_book] = await pool.query(`SELECT * from buku where id = ?`, [
+        id_buku,
+      ])
 
       if (temp_book[0].banyak_buku === 0) {
         return res.status(400).json({
-          message : 'Buku sudah tidak tersedia.',
-          data: null
+          message: 'Buku sudah tidak tersedia.',
+          data: null,
         })
       }
 
@@ -168,7 +176,11 @@ const update = async (req, res) => {
             status = ?,
             banyak_buku = ?
             WHERE id = ?;`,
-        [temp_book[0].banyak_buku - 1 > 0, temp_book[0].banyak_buku - 1, id_buku]
+        [
+          temp_book[0].banyak_buku - 1 > 0,
+          temp_book[0].banyak_buku - 1,
+          id_buku,
+        ]
       )
 
       query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = ? WHERE id = ?;`
