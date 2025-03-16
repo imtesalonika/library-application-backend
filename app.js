@@ -1,5 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
+const path = require('path')
+
 const userController = require('./controllers/UserController')
 const authController = require('./controllers/AuthController')
 const pengumumanController = require('./controllers/PengumumanController')
@@ -8,8 +11,8 @@ const likeController = require('./controllers/LikeController')
 const commentController = require('./controllers/PostCommentController')
 const tugasakhirController = require('./controllers/TugasAkhirController')
 const pinjamBukuController = require('./controllers/PinjamBukuController')
-const cors = require('cors')
-const path = require('path')
+
+const notificationController = require('./controllers/notificationController') // Tambahkan route notifikasi
 
 const app = express()
 const port = 3000
@@ -33,6 +36,7 @@ app.use('/api/pengumuman', pengumumanController)
 app.use('/api/book', bookController)
 app.use('/api/tugasakhir', tugasakhirController)
 app.use('/api/pinjam-buku', pinjamBukuController)
+app.use('/api/notifications', notificationController) // Tambahkan route notifikasi
 
 // Static Files
 app.use(
@@ -42,6 +46,6 @@ app.use(
 app.use(express.static('public'))
 
 // Jalankan server
-app. listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
