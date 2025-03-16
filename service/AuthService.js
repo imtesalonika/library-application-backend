@@ -60,7 +60,6 @@ const login = async (req, res) => {
         if (rows[0].name) {
           data.is_complete = true
           delete data.user
-
           data.user = rows[0]
 
           return res.status(200).json({
@@ -107,7 +106,6 @@ const login = async (req, res) => {
           if (rows[0].name) {
             data.is_complete = true
             delete data.user
-
             data.user = rows[0]
 
             return res.status(200).json({
@@ -133,6 +131,35 @@ const login = async (req, res) => {
     console.log(error)
 
     return res.status(500).json({ message: 'Terjadi kesalahan saat login.' })
+  }
+}
+
+const completeData = async (req, res) => {
+  console.log('Tesa Log : Ada request complete data')
+
+  const { user_id, name, fcm_token } = req.body
+
+  console.log(req.body)
+
+  try {
+    await pool.query(
+      `UPDATE users 
+       SET name = ?, fcm_token = ?
+       WHERE id = ?;`,
+      [name, fcm_token, user_id]
+    )
+
+    const [row] = await pool.query(`SELECT * FROM users WHERE id=${user_id};`)
+
+    return res.status(200).json({
+      message: 'Berhasil menambahkan nama dan menyimpan token FCM.',
+      data: row,
+    })
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json({ message: 'Terjadi kesalahan saat menyimpan data.', data: null })
   }
 }
 
@@ -193,7 +220,6 @@ const loginMobile = async (req, res) => {
       if (rows[0].name) {
         data.is_complete = true
         delete data.user
-
         data.user = rows[0]
 
         return res.status(200).json({
@@ -218,35 +244,6 @@ const loginMobile = async (req, res) => {
   }
 }
 
-const completeData = async (req, res) => {
-  console.log('Tesa Log : Ada request complete data')
-
-  const { user_id, name } = req.body
-
-  console.log(req.body)
-
-  try {
-    await pool.query(
-      `UPDATE users 
-       SET name = ?
-       WHERE id = ?;`,
-      [name, user_id]
-    )
-
-    const [row] = await pool.query(`SELECT * FROM users WHERE id=${user_id};`)
-
-    return res.status(200).json({
-      message: 'Berhasil menambahkan nama.',
-      data: row,
-    })
-  } catch (error) {
-    console.error(error)
-    return res
-      .status(500)
-      .json({ message: 'Terjadi kesalahan saat login.', data: null })
-  }
-}
-
 const visit = async (req, res) => {
   try {
     await pool.query(`INSERT INTO visitor_logs (visit_time) VALUES (NOW());`)
@@ -259,7 +256,7 @@ const visit = async (req, res) => {
     console.error(error)
     return res
       .status(500)
-      .json({ message: 'Terjadi kesalahan saat login.', data: null })
+      .json({ message: 'Terjadi kesalahan saat mencatat log.', data: null })
   }
 }
 
@@ -278,7 +275,7 @@ const getTotalVisit = async (req, res) => {
     console.error(error)
     return res
       .status(500)
-      .json({ message: 'Terjadi kesalahan saat login.', data: null })
+      .json({ message: 'Terjadi kesalahan saat mengambil data.', data: null })
   }
 }
 
