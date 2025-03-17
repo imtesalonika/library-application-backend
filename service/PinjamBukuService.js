@@ -204,7 +204,7 @@ const update = async (req, res) => {
         await sendNotificationToUser(
           fcm_token,
           'Peminjaman Buku Diterima',
-          `Peminjaman buku "${judul_buku}" telah disetujui.`
+          `Peminjaman buku "${judul_buku}" telah disetujui, Silahkan kembalikan sebelum tanggal "${batas_peminjaman}".`
         )
       }
     } else if (status === 'REJECTED') {
