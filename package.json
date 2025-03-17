@@ -17,7 +17,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "firebase-admin": "^13.2.0",
-    "jsonpnwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.47",
     "multer": "^1.4.5-lts.1",
