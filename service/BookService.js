@@ -60,8 +60,6 @@ const getFavorite = async (req, res) => {
       [user_id]
     )
 
-    console.log(favorites)
-
     res.json({ message: 'Success', data: favorites })
   } catch (error) {
     console.error('Error fetching favorites:', error)
@@ -286,8 +284,6 @@ const addToFavorite = async (req, res) => {
       'SELECT * FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?',
       [user_id, book_id]
     )
-
-    console.log(existing)
 
     if (existing.length > 0) {
       return res

@@ -36,7 +36,6 @@ const storage = multer.diskStorage({
 })
 
 router.post('/pengumuman', upload.array('files'), async (req, res) => {
-  console.log(req.files)
   const { judul, isi, kategori } = req.body
   const files = req.files
   const tempFile = []
