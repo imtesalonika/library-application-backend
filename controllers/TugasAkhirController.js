@@ -10,7 +10,7 @@ const {
 const authMiddleware = require('../middleware/AuthMiddleware')
 const router = express.Router()
 
-router.get('/', getAll)
+router.post('/get-all', getAll)
 router.get('/by-program', getByProgram) // Endpoint baru
 router.get('/:id', getById)
 router.post('/', create)

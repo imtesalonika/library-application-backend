@@ -1,13 +1,34 @@
 const pool = require('../config/database')
 
 const getAll = async (req, res) => {
+  const { fakultas, prodi, judul } = req.body
+
   try {
-    const [rowsPosts] = await pool.query(`SELECT * FROM tugasakhir;`)
+    let query = `SELECT * FROM tugasakhir WHERE 1=1`
+    let params = []
+
+    if (fakultas) {
+      query += ` AND fakultas LIKE ?`
+      params.push(`%${fakultas}%`)
+    }
+
+    if (prodi) {
+      query += ` AND prodi LIKE ?`
+      params.push(`%${prodi}%`)
+    }
+
+    if (judul) {
+      query += ` AND judul LIKE ?`
+      params.push(`%${judul}%`)
+    }
+
+    const [rowsPosts] = await pool.query(query, params)
     return res.status(200).json({
       message: 'success',
       data: rowsPosts,
     })
   } catch (error) {
+    console.error(error)
     return res
       .status(400)
       .json({ message: 'Gagal untuk mendapatkan tugas akhir!', data: null })
