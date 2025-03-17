@@ -12,8 +12,6 @@ COPY package.json ./
 COPY . .
 
 RUN npm install
-RUN node migration.js
-RUN #npm run build
 
 EXPOSE 3000
 
