@@ -121,9 +121,9 @@ const getById = async (req, res) => {
 
     // Parse data file dari string JSON ke array
     const pengumuman = rows[0]
-    if (pengumuman.file) {
-      pengumuman.file = JSON.parse(pengumuman.file)
-    }
+    // if (pengumuman.file) {
+    //   pengumuman.file = JSON.parse(pengumuman.file)
+    // }
 
     return res.status(200).json({ message: 'success', data: pengumuman })
   } catch (error) {
