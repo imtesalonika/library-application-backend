@@ -1,5 +1,6 @@
 const pool = require('../config/database')
 const moment = require('moment-timezone')
+const { sendNotificationToUser } = require('../service/notificationService')
 
 const getAll = async (req, res) => {
   const { start_date, end_date, id_user } = req.query
@@ -125,9 +126,26 @@ const update = async (req, res) => {
   try {
     let query, params
 
+    // Ambil informasi peminjaman dan user terkait
+    const [loanData] = await pool.query(
+      `SELECT p.id_user, u.fcm_token, b.judul AS judul_buku 
+       FROM peminjaman p 
+       JOIN users u ON p.id_user = u.id
+       JOIN buku b ON p.id_buku = b.id
+       WHERE p.id = ?;`,
+      [id]
+    )
+
+    if (loanData.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Peminjaman tidak ditemukan!', data: null })
+    }
+
+    const { id_user, fcm_token, judul_buku } = loanData[0]
+
     if (status === 'DONE') {
-      // Generate tanggal_kembali dengan zona waktu WIB
-      const tanggal_kembali = moment
+      const tanggal_kembali = moment()
         .tz('Asia/Jakarta')
         .format('YYYY-MM-DD HH:mm:ss')
 
@@ -137,9 +155,7 @@ const update = async (req, res) => {
 
       await pool.query(
         `UPDATE buku 
-            SET 
-            status = ?,
-            banyak_buku = ?
+            SET status = ?, banyak_buku = ? 
             WHERE id = ?;`,
         [
           temp_book[0].banyak_buku + 1 > 0,
@@ -151,10 +167,10 @@ const update = async (req, res) => {
       query = `UPDATE peminjaman SET status = ?, tanggal_kembali = ? WHERE id = ?;`
       params = [status, tanggal_kembali, id]
     } else if (status === 'IS BEING BORROWED') {
-      const tanggal_pinjam = moment
+      const tanggal_pinjam = moment()
         .tz('Asia/Jakarta')
         .format('YYYY-MM-DD HH:mm:ss')
-      const batas_peminjaman = moment
+      const batas_peminjaman = moment()
         .tz('Asia/Jakarta')
         .add(7, 'days')
         .format('YYYY-MM-DD HH:mm:ss')
@@ -164,17 +180,14 @@ const update = async (req, res) => {
       ])
 
       if (temp_book[0].banyak_buku === 0) {
-        return res.status(400).json({
-          message: 'Buku sudah tidak tersedia.',
-          data: null,
-        })
+        return res
+          .status(400)
+          .json({ message: 'Buku sudah tidak tersedia.', data: null })
       }
 
       await pool.query(
         `UPDATE buku 
-            SET 
-            status = ?,
-            banyak_buku = ?
+            SET status = ?, banyak_buku = ? 
             WHERE id = ?;`,
         [
           temp_book[0].banyak_buku - 1 > 0,
@@ -185,6 +198,27 @@ const update = async (req, res) => {
 
       query = `UPDATE peminjaman SET status = ?, tanggal_pinjam = ?, batas_peminjaman = ? WHERE id = ?;`
       params = [status, tanggal_pinjam, batas_peminjaman, id]
+
+      // Kirim notifikasi bahwa peminjaman diterima
+      if (fcm_token) {
+        await sendNotificationToUser(
+          fcm_token,
+          'Peminjaman Buku Diterima',
+          `Peminjaman buku "${judul_buku}" telah disetujui.`
+        )
+      }
+    } else if (status === 'REJECTED') {
+      query = `UPDATE peminjaman SET status = ? WHERE id = ?;`
+      params = [status, id]
+
+      // Kirim notifikasi bahwa peminjaman ditolak
+      if (fcm_token) {
+        await sendNotificationToUser(
+          fcm_token,
+          'Peminjaman Buku Ditolak',
+          `Maaf, peminjaman buku "${judul_buku}" tidak dapat diproses.`
+        )
+      }
     } else {
       query = `UPDATE peminjaman SET status = ? WHERE id = ?;`
       params = [status, id]
@@ -201,7 +235,7 @@ const update = async (req, res) => {
       .status(200)
       .json({ message: 'Status peminjaman diperbarui.', data: null })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return res
       .status(400)
       .json({ message: 'Gagal memperbarui status peminjaman!', data: null })

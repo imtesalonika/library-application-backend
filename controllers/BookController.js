@@ -7,7 +7,7 @@ const {
   update,
   addToFavorite,
   getFavorite,
-  removeFromFavorite
+  removeFromFavorite,
 } = require('../service/BookService')
 const authMiddleware = require('../middleware/AuthMiddleware')
 const upload = require('../middleware/UploadBookPictureMiddleware')

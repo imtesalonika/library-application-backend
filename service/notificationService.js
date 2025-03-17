@@ -1,86 +1,54 @@
 const admin = require('../config/firebaseAdmin')
 
-// Kirim notifikasi ke satu perangkat
-const sendNotification = async (req, res) => {
+// Kirim notifikasi ke satu pengguna berdasarkan token
+const sendNotificationToUser = async (token, title, body) => {
+  if (!token) {
+    console.warn('⚠️ Token FCM tidak ditemukan.')
+    return
+  }
+
+  const message = {
+    notification: { title, body },
+    token,
+  }
+
   try {
-    const { title, body, token } = req.body
-
-    if (!title || !body || !token) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Missing required fields' })
-    }
-
-    const message = {
-      notification: { title, body },
-      token, // Kirim ke satu perangkat
-    }
-
     const response = await admin.messaging().send(message)
-    res
-      .status(200)
-      .json({ success: true, message: 'Notifikasi terkirim!', response })
+    console.log('✅ Notifikasi terkirim:', response)
+    return response
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    console.error('❌ Gagal mengirim notifikasi:', error.message)
   }
 }
 
 // Kirim notifikasi ke banyak perangkat
-const sendMultipleNotifications = async (req, res) => {
-  try {
-    const { title, body, tokens } = req.body
-
-    if (!title || !body || !tokens || !Array.isArray(tokens)) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Invalid request format' })
-    }
-
-    const message = {
-      notification: { title, body },
-      tokens, // Kirim ke banyak perangkat
-    }
-
-    const response = await admin.messaging().sendMulticast(message)
-    res.status(200).json({
-      success: true,
-      message: 'Notifikasi multicast terkirim!',
-      response,
-    })
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+const sendMultipleNotifications = async (tokens, title, body) => {
+  if (!tokens || tokens.length === 0) {
+    console.log('🚨 No FCM tokens found')
+    return
   }
-}
 
-// Kirim notifikasi ke topik tertentu
-const sendTopicNotification = async (req, res) => {
+  const message = {
+    notification: { title, body },
+    tokens, // Tetap gunakan tokens untuk pengiriman multiple
+  }
+
   try {
-    const { title, body, topic } = req.body
+    const response = await admin.messaging().sendEachForMulticast(message)
+    console.log('✅ Notifications sent:', response)
 
-    if (!title || !body || !topic) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Missing required fields' })
+    if (response.failureCount > 0) {
+      console.log(
+        '⚠️ Some notifications failed:',
+        response.responses.filter((r) => !r.success)
+      )
     }
-
-    const message = {
-      notification: { title, body },
-      topic, // Kirim ke semua yang subscribe ke topic ini
-    }
-
-    const response = await admin.messaging().send(message)
-    res.status(200).json({
-      success: true,
-      message: 'Notifikasi ke topik terkirim!',
-      response,
-    })
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    console.error('❌ Error sending notifications:', error.message)
   }
 }
 
 module.exports = {
-  sendNotification,
+  sendNotificationToUser,
   sendMultipleNotifications,
-  sendTopicNotification,
 }

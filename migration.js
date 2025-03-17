@@ -97,6 +97,16 @@ const queries = [
   FOREIGN KEY (id_user) REFERENCES users(id)
 );`,
   `
+CREATE TABLE notifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_user INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  message TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE
+);`,
+  `
   CREATE TABLE buku_favorit_user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,

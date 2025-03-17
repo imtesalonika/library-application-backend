@@ -1,13 +1,12 @@
 const express = require('express')
-const router = express.Router()
 const {
-  sendNotification,
+  sendNotificationToUser,
   sendMultipleNotifications,
-  sendTopicNotification,
 } = require('../service/notificationService')
 
-router.post('/send-notification', sendNotification)
+const router = express.Router()
+
+router.post('/send-notification', sendNotificationToUser)
 router.post('/send-multiple-notifications', sendMultipleNotifications)
-router.post('/send-topic-notification', sendTopicNotification)
 
 module.exports = router

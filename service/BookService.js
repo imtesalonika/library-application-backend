@@ -1,4 +1,5 @@
 const pool = require('../config/database')
+const { sendMultipleNotifications } = require('../service/notificationService')
 
 const getAll = async (req, res) => {
   try {
@@ -56,7 +57,7 @@ const getFavorite = async (req, res) => {
         JOIN buku b ON uf.buku_id = b.id
         WHERE uf.user_id = ?
         ORDER BY uf.created_at DESC`,
-      [user_id],
+      [user_id]
     )
 
     console.log(favorites)
@@ -64,10 +65,11 @@ const getFavorite = async (req, res) => {
     res.json({ message: 'Success', data: favorites })
   } catch (error) {
     console.error('Error fetching favorites:', error)
-    res.status(500).json({ data: null, message: 'Gagal mengambil data favorit' })
+    res
+      .status(500)
+      .json({ data: null, message: 'Gagal mengambil data favorit' })
   }
 }
-
 
 const create = async (req, res) => {
   const {
@@ -84,7 +86,6 @@ const create = async (req, res) => {
     banyak_buku,
   } = req.body
 
-  // Validate required fields
   if (
     !judul ||
     !penulis ||
@@ -96,50 +97,50 @@ const create = async (req, res) => {
     !lokasi ||
     !banyak_buku
   ) {
-    return res
-      .status(400)
-      .json({ message: 'Semua field wajib diisi, kecuali edisi dan gambar!' })
+    return res.status(400).json({ message: 'Semua field wajib diisi!' })
   }
 
   const picturePath = req.file ? `books/${req.file.filename}` : null
 
   try {
-    await pool.query(`
-      INSERT INTO buku (
-          judul,
-          penulis,
-          penerbit,
-          tahun_terbit,
-          isbn,
-          jumlah_halaman,
-          bahasa,
-          edisi,
-          abstrak,
-          status,
-          banyak_buku,
-          lokasi,
-          gambar
-          ) 
-      VALUES (
-          "${judul}",
-          "${penulis}",
-          "${penerbit}",
-          "${+tahun_terbit}",
-          "${isbn}",
-          "${+jumlah_halaman}",
-          "${bahasa}",
-          ${req.body.edisi ? `"${req.body.edisi}"` : 'NULL'},  -- Allow NULL for edisi
-          "${abstrak}",
-          "${status === 'true' ? 1 : 0}",
-          "${+banyak_buku}",
-          "${lokasi}",
-          ${picturePath ? `"${picturePath}"` : 'NULL'}  -- Allow NULL for gambar
-          ) 
-    `)
+    await pool.query(
+      `INSERT INTO buku (judul, penulis, penerbit, tahun_terbit, isbn, jumlah_halaman, bahasa, abstrak, lokasi, status, banyak_buku, gambar) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        judul,
+        penulis,
+        penerbit,
+        tahun_terbit,
+        isbn,
+        jumlah_halaman,
+        bahasa,
+        abstrak,
+        lokasi,
+        status === 'true' ? 1 : 0,
+        banyak_buku,
+        picturePath,
+      ]
+    )
 
-    return res.status(200).json({ data: `Buku berhasil ditambahkan!` })
+    // Ambil semua fcm_token dari user
+    const [users] = await pool.query(
+      `SELECT fcm_token FROM users WHERE fcm_token IS NOT NULL`
+    )
+    const tokens = users.map((user) => user.fcm_token).filter((token) => token)
+
+    if (tokens.length > 0) {
+      await sendMultipleNotifications(
+        tokens,
+        'Buku Baru Tersedia!',
+        `Buku "${judul}" kini tersedia di perpustakaan.`
+      )
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Buku berhasil ditambahkan dan notifikasi dikirim!' })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return res.status(400).json({ message: 'Gagal menambahkan buku!' })
   }
 }
@@ -263,7 +264,7 @@ const update = async (req, res) => {
         lokasi,
         picturePath ? picturePath : buku[0].gambar,
         +id,
-      ],
+      ]
     )
 
     return res
@@ -283,7 +284,7 @@ const addToFavorite = async (req, res) => {
   try {
     const [existing] = await pool.query(
       'SELECT * FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?',
-      [user_id, book_id],
+      [user_id, book_id]
     )
 
     console.log(existing)
@@ -296,7 +297,7 @@ const addToFavorite = async (req, res) => {
 
     await pool.query(
       'INSERT INTO buku_favorit_user (user_id, buku_id) VALUES (?, ?)',
-      [user_id, book_id],
+      [user_id, book_id]
     )
 
     return res
@@ -311,36 +312,36 @@ const addToFavorite = async (req, res) => {
 }
 
 const removeFromFavorite = async (req, res) => {
-  const { user_id, book_id } = req.body;
+  const { user_id, book_id } = req.body
 
   try {
     const [existing] = await pool.query(
-      "SELECT * FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?",
+      'SELECT * FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?',
       [user_id, book_id]
-    );
+    )
 
     if (existing.length === 0) {
-      return res
-        .status(400)
-        .json({ data: null, message: "Buku tidak ditemukan dalam daftar favorit" });
+      return res.status(400).json({
+        data: null,
+        message: 'Buku tidak ditemukan dalam daftar favorit',
+      })
     }
 
     await pool.query(
-      "DELETE FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?",
+      'DELETE FROM buku_favorit_user WHERE user_id = ? AND buku_id = ?',
       [user_id, book_id]
-    );
+    )
 
     return res
       .status(200)
-      .json({ data: null, message: "Buku berhasil dihapus dari favorit" });
+      .json({ data: null, message: 'Buku berhasil dihapus dari favorit' })
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return res
       .status(500)
-      .json({ data: null, message: "Terjadi kesalahan saat menghapus buku" });
+      .json({ data: null, message: 'Terjadi kesalahan saat menghapus buku' })
   }
-};
-
+}
 
 module.exports = {
   getAll,
@@ -350,5 +351,5 @@ module.exports = {
   update,
   addToFavorite,
   getFavorite,
-  removeFromFavorite
+  removeFromFavorite,
 }
