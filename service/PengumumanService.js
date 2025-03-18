@@ -1,4 +1,5 @@
 const pool = require('../config/database')
+const { sendMultipleNotifications } = require('../service/notificationService')
 
 const calculateFileSize = (sizeInBytes) => {
   return sizeInBytes / (1024 * 1024)
@@ -97,6 +98,21 @@ const create = async (req, res) => {
       `INSERT INTO pengumuman (judul, isi, kategori, file) VALUES (?, ?, ?, ?)`,
       [judul, isi, kategori, JSON.stringify(tempFile)] // Simpan sebagai string JSON
     )
+
+    // 🔹 Ambil semua FCM token dari user yang valid
+    const [users] = await pool.query(
+      `SELECT fcm_token FROM users WHERE fcm_token IS NOT NULL`
+    )
+    const tokens = users.map((user) => user.fcm_token).filter((token) => token)
+
+    // 🔹 Kirim notifikasi ke semua user jika ada token yang tersedia
+    if (tokens.length > 0) {
+      await sendMultipleNotifications(
+        tokens,
+        'Pengumuman Baru 📢',
+        `Ada pengumuman terbaru. Cek sekarang!`
+      )
+    }
 
     return res.status(200).json({ data: `Pengumuman berhasil ditambahkan!` })
   } catch (error) {
