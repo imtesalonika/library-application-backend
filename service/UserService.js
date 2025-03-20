@@ -61,57 +61,68 @@ const getAll = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-  const { id, name } = req.body
+  const { id, name } = req.body;
 
-  const picturePath = req.file ? `profile_picture/${req.file.filename}` : null
+  // ✅ Validasi nama hanya boleh huruf (a-z, A-Z) menggunakan regex
+  if (!/^[a-zA-Z]+$/.test(name)) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Nama hanya boleh terdiri dari huruf a-z dan A-Z!',
+    });
+  }
+
+  const picturePath = req.file ? `profile_picture/${req.file.filename}` : null;
 
   try {
-    const [user] = await pool.query(`SELECT * FROM users WHERE id = '${id}'`)
+    const [user] = await pool.query(`SELECT * FROM users WHERE id = ?`, [id]);
     if (user.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `User dengan username ${name} tidak ditemukan!`,
-      })
+        message: `User dengan ID ${id} tidak ditemukan!`,
+      });
     }
 
     if (picturePath === null) {
       await pool.query(
         `
-      update users
-          set name = '${name}'
-      where id = '${id}';
-    `
-      )
+            UPDATE users
+            SET name = ?
+            WHERE id = ?;
+        `,
+        [name, id]
+      );
     } else {
       await pool.query(
         `
-      update users
-          set name = '${name}',
-          foto_profil = '${picturePath}'
-      where id = '${id}';
-    `
-      )
+            UPDATE users
+            SET name = ?,
+                foto_profil = ?
+            WHERE id = ?;
+        `,
+        [name, picturePath, id]
+      );
     }
 
-    return res
-      .status(200)
-      .json({ message: `Berhasil Memperbarui User ${name}!`, data: user })
+    return res.status(200).json({
+      message: `Berhasil memperbarui user ${name}!`,
+      data: user,
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
 
     if (error.errno === 1064) {
       return res.status(500).json({
-        message: `Gagal memperbarui user ${name}. Sintax SQL Error!`,
+        message: `Gagal memperbarui user ${name}. Sintaks SQL Error!`,
         data: null,
-      })
+      });
     }
 
     return res.status(500).json({
       message: `Gagal memperbarui user ${name}`,
       data: null,
-    })
+    });
   }
-}
+};
 
 const deleteProfilePict =  async (req, res) => {
   const { id } = req.body;
