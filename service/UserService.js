@@ -63,11 +63,10 @@ const getAll = async (req, res) => {
 const updateUser = async (req, res) => {
   const { id, name } = req.body;
 
-  // ✅ Validasi nama hanya boleh huruf (a-z, A-Z) menggunakan regex
-  if (!/^[a-zA-Z]+$/.test(name)) {
+  if (!/^[a-zA-Z\s]+$/.test(name)) {
     return res.status(400).json({
       status: 400,
-      message: 'Nama hanya boleh terdiri dari huruf a-z dan A-Z!',
+      message: 'Nama hanya boleh terdiri dari huruf a-z, A-Z, dan spasi!',
     });
   }
 
