@@ -113,9 +113,24 @@ const updateUser = async (req, res) => {
   }
 }
 
+const deleteProfilePict =  async (req, res) => {
+  const { id } = req.body;
+  const [user] = await pool.query(`SELECT * FROM users WHERE id = '${id}'`)
+
+  await pool.query(
+    `
+      update users
+          set  foto_profil = null
+      where id = '${id}';
+    `)
+
+  return res.status(200).json({ message: 'Berhasil menghapus foto profil.', data: user })
+}
+
 module.exports = {
   create,
   getById,
   updateUser,
-  getAll
+  getAll,
+  deleteProfilePict
 }

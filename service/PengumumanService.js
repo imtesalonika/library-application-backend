@@ -66,8 +66,11 @@ router.post('/pengumuman', upload.array('files'), async (req, res) => {
 const getAll = async (req, res) => {
   try {
     const [rowsPosts] = await pool.query(`
-       SELECT * FROM pengumuman ORDER BY updated_at DESC;;
+       SELECT * FROM pengumuman ORDER BY updated_at DESC;
    `)
+
+    console.log(rowsPosts);
+
     return res.status(200).json({
       message: 'success',
       data: rowsPosts,
