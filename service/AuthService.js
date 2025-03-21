@@ -4,7 +4,6 @@ require('dotenv').config()
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 const login = async (req, res) => {
-
   const { username, password } = req.body
 
   try {
@@ -151,7 +150,7 @@ const completeData = async (req, res) => {
     const [row] = await pool.query(`SELECT * FROM users WHERE id=${user_id};`)
 
     return res.status(200).json({
-      message: 'Berhasil menambahkan nama dan menyimpan token FCM.',
+      message: 'Berhasil menambahkan nama',
       data: row,
     })
   } catch (error) {

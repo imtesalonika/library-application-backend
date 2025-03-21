@@ -172,7 +172,7 @@ const update = async (req, res) => {
         .format('YYYY-MM-DD HH:mm:ss')
       const batas_peminjaman = moment()
         .tz('Asia/Jakarta')
-        .add(7, 'days')
+        .subtract(2, 'days') // Mengurangi 2 hari dari sekarang
         .format('YYYY-MM-DD HH:mm:ss')
 
       const [temp_book] = await pool.query(`SELECT * from buku where id = ?`, [
