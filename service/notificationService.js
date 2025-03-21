@@ -5,7 +5,7 @@ const moment = require('moment-timezone')
 
 // Konfigurasi waktu notifikasi (dapat disesuaikan secara manual)
 const notificationSchedule = {
-  minute: 5, // Jalankan pada menit ke-25
+  minute: 20, // Jalankan pada menit ke-25
   hour: 15, // Jalankan pada jam 00:25
 }
 
