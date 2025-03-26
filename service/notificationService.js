@@ -6,7 +6,7 @@ const moment = require('moment-timezone')
 // Konfigurasi waktu notifikasi (dapat disesuaikan secara manual)
 const notificationSchedule = {
   minute: 0,
-  hour: 4,
+  hour: 12,
 }
 
 // Kirim notifikasi ke satu pengguna berdasarkan token

@@ -12,7 +12,7 @@ const commentController = require('./controllers/PostCommentController')
 const tugasakhirController = require('./controllers/TugasAkhirController')
 const pinjamBukuController = require('./controllers/PinjamBukuController')
 
-const notificationController = require('./controllers/notificationController') // Tambahkan route notifikasi
+const notificationController = require('./controllers/notificationController')
 
 const app = express()
 const port = 3000
@@ -36,7 +36,7 @@ app.use('/api/pengumuman', pengumumanController)
 app.use('/api/book', bookController)
 app.use('/api/tugasakhir', tugasakhirController)
 app.use('/api/pinjam-buku', pinjamBukuController)
-app.use('/api/notifications', notificationController) // Tambahkan route notifikasi
+app.use('/api/notifications', notificationController)
 
 // Static Files
 app.use(

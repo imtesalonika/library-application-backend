@@ -172,7 +172,7 @@ const update = async (req, res) => {
         .format('YYYY-MM-DD HH:mm:ss')
       const batas_peminjaman = moment()
         .tz('Asia/Jakarta')
-        .add(2, 'days')
+        .add(7, 'days')
         // .subtract(2, 'days')
         .format('YYYY-MM-DD HH:mm:ss')
 
