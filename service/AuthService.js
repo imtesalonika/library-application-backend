@@ -20,7 +20,7 @@ const login = async (req, res) => {
     if ((username === ''  &&  password === '') || (username === null && password === null)) {
       return res
         .status(401)
-        .json({ message: 'Username tidak boleh kosong!' })
+        .json({ message: 'Username dan password tidak boleh kosong!' })
 
     }
 
