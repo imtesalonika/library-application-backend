@@ -17,6 +17,20 @@ const login = async (req, res) => {
       redirect: 'follow',
     }
 
+    if (username === '' || username == null) {
+      return res
+        .status(401)
+        .json({ message: 'Username tidak boleh kosong!' })
+
+    }
+
+    if (password === '' || password == null) {
+      return res
+        .status(401)
+        .json({ message: 'Password tidak boleh kosong!' })
+
+    }
+
     const response = await fetch(
       'https://103.167.217.134/api/jwt-api/do-auth',
       requestOptions
