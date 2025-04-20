@@ -17,6 +17,13 @@ const login = async (req, res) => {
       redirect: 'follow',
     }
 
+    if ((username === ''  &&  password === '') || (username === null && password === null)) {
+      return res
+        .status(401)
+        .json({ message: 'Username tidak boleh kosong!' })
+
+    }
+
     if (username === '' || username == null) {
       return res
         .status(401)
