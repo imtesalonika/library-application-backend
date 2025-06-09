@@ -69,7 +69,7 @@ const getAll = async (req, res) => {
        SELECT * FROM pengumuman ORDER BY updated_at DESC;
    `)
 
-    console.log(rowsPosts);
+    console.log(rowsPosts)
 
     return res.status(200).json({
       message: 'success',
@@ -140,9 +140,14 @@ const getById = async (req, res) => {
 
     // Parse data file dari string JSON ke array
     const pengumuman = rows[0]
-    // if (pengumuman.file) {
-    //   pengumuman.file = JSON.parse(pengumuman.file)
-    // }
+    if (pengumuman.file) {
+      try {
+        pengumuman.file = JSON.parse(pengumuman.file)
+      } catch (parseError) {
+        console.error('Error parsing file JSON:', parseError)
+        pengumuman.file = []
+      }
+    }
 
     return res.status(200).json({ message: 'success', data: pengumuman })
   } catch (error) {
